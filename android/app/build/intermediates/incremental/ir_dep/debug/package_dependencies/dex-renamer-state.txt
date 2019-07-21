@@ -1,0 +1,4 @@
+#Sat Jul 20 16:02:09 PDT 2019
+base.0=/opt/view-from-below/android/app/build/intermediates/transforms/dexMerger/debug/10
+path.0=classes.dex
+renamed.0=classes.dex

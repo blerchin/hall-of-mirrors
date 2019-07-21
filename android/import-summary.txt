@@ -1,0 +1,382 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* doc/
+* doc/AES.MyUserInfo.html
+* doc/AES.html
+* doc/Compression.MyUserInfo.html
+* doc/Compression.html
+* doc/Daemon.MyUserInfo.html
+* doc/Daemon.Parrot.html
+* doc/Daemon.html
+* doc/Exec.MyUserInfo.html
+* doc/Exec.html
+* doc/KnownHosts.MyUserInfo.html
+* doc/KnownHosts.html
+* doc/Logger.MyLogger.html
+* doc/Logger.MyUserInfo.html
+* doc/Logger.html
+* doc/PortForwardingL.MyUserInfo.html
+* doc/PortForwardingL.html
+* doc/PortForwardingR.MyUserInfo.html
+* doc/PortForwardingR.html
+* doc/ScpFrom.MyUserInfo.html
+* doc/ScpFrom.html
+* doc/ScpTo.MyUserInfo.html
+* doc/ScpTo.html
+* doc/ScpToNoneCipher.MyUserInfo.html
+* doc/ScpToNoneCipher.html
+* doc/Sftp.MyProgressMonitor.html
+* doc/Sftp.MyUserInfo.html
+* doc/Sftp.html
+* doc/Shell.MyUserInfo.html
+* doc/Shell.html
+* doc/StreamForwarding.MyUserInfo.html
+* doc/StreamForwarding.html
+* doc/Subsystem.MyUserInfo.html
+* doc/Subsystem.html
+* doc/Sudo.MyUserInfo.html
+* doc/Sudo.html
+* doc/UserAuthKI.MyUserInfo.html
+* doc/UserAuthKI.html
+* doc/UserAuthPubKey.MyUserInfo.html
+* doc/UserAuthPubKey.html
+* doc/ViaHTTP.MyUserInfo.html
+* doc/ViaHTTP.html
+* doc/ViaSOCKS5.MyUserInfo.html
+* doc/ViaSOCKS5.html
+* doc/X11Forwarding.MyUserInfo.html
+* doc/X11Forwarding.html
+* doc/allclasses-frame.html
+* doc/allclasses-noframe.html
+* doc/class-use/
+* doc/class-use/AES.MyUserInfo.html
+* doc/class-use/AES.html
+* doc/class-use/Compression.MyUserInfo.html
+* doc/class-use/Compression.html
+* doc/class-use/Daemon.MyUserInfo.html
+* doc/class-use/Daemon.Parrot.html
+* doc/class-use/Daemon.html
+* doc/class-use/Exec.MyUserInfo.html
+* doc/class-use/Exec.html
+* doc/class-use/KnownHosts.MyUserInfo.html
+* doc/class-use/KnownHosts.html
+* doc/class-use/Logger.MyLogger.html
+* doc/class-use/Logger.MyUserInfo.html
+* doc/class-use/Logger.html
+* doc/class-use/PortForwardingL.MyUserInfo.html
+* doc/class-use/PortForwardingL.html
+* doc/class-use/PortForwardingR.MyUserInfo.html
+* doc/class-use/PortForwardingR.html
+* doc/class-use/ScpFrom.MyUserInfo.html
+* doc/class-use/ScpFrom.html
+* doc/class-use/ScpTo.MyUserInfo.html
+* doc/class-use/ScpTo.html
+* doc/class-use/ScpToNoneCipher.MyUserInfo.html
+* doc/class-use/ScpToNoneCipher.html
+* doc/class-use/Sftp.MyProgressMonitor.html
+* doc/class-use/Sftp.MyUserInfo.html
+* doc/class-use/Sftp.html
+* doc/class-use/Shell.MyUserInfo.html
+* doc/class-use/Shell.html
+* doc/class-use/StreamForwarding.MyUserInfo.html
+* doc/class-use/StreamForwarding.html
+* doc/class-use/Subsystem.MyUserInfo.html
+* doc/class-use/Subsystem.html
+* doc/class-use/Sudo.MyUserInfo.html
+* doc/class-use/Sudo.html
+* doc/class-use/UserAuthKI.MyUserInfo.html
+* doc/class-use/UserAuthKI.html
+* doc/class-use/UserAuthPubKey.MyUserInfo.html
+* doc/class-use/UserAuthPubKey.html
+* doc/class-use/ViaHTTP.MyUserInfo.html
+* doc/class-use/ViaHTTP.html
+* doc/class-use/ViaSOCKS5.MyUserInfo.html
+* doc/class-use/ViaSOCKS5.html
+* doc/class-use/X11Forwarding.MyUserInfo.html
+* doc/class-use/X11Forwarding.html
+* doc/com/
+* doc/com/jcraft/
+* doc/com/jcraft/jsch/
+* doc/com/jcraft/jsch/Buffer.html
+* doc/com/jcraft/jsch/Channel.html
+* doc/com/jcraft/jsch/ChannelDirectTCPIP.html
+* doc/com/jcraft/jsch/ChannelExec.html
+* doc/com/jcraft/jsch/ChannelForwardedTCPIP.html
+* doc/com/jcraft/jsch/ChannelSftp.LsEntry.html
+* doc/com/jcraft/jsch/ChannelSftp.LsEntrySelector.html
+* doc/com/jcraft/jsch/ChannelSftp.html
+* doc/com/jcraft/jsch/ChannelShell.html
+* doc/com/jcraft/jsch/ChannelSubsystem.html
+* doc/com/jcraft/jsch/Cipher.html
+* doc/com/jcraft/jsch/CipherNone.html
+* doc/com/jcraft/jsch/Compression.html
+* doc/com/jcraft/jsch/DH.html
+* doc/com/jcraft/jsch/DHG1.html
+* doc/com/jcraft/jsch/DHG14.html
+* doc/com/jcraft/jsch/DHGEX.html
+* doc/com/jcraft/jsch/ForwardedTCPIPDaemon.html
+* doc/com/jcraft/jsch/GSSContext.html
+* doc/com/jcraft/jsch/HASH.html
+* doc/com/jcraft/jsch/HostKey.html
+* doc/com/jcraft/jsch/HostKeyRepository.html
+* doc/com/jcraft/jsch/IO.html
+* doc/com/jcraft/jsch/Identity.html
+* doc/com/jcraft/jsch/IdentityRepository.html
+* doc/com/jcraft/jsch/JSch.html
+* doc/com/jcraft/jsch/JSchException.html
+* doc/com/jcraft/jsch/KeyExchange.html
+* doc/com/jcraft/jsch/KeyPair.html
+* doc/com/jcraft/jsch/KeyPairDSA.html
+* doc/com/jcraft/jsch/KeyPairGenDSA.html
+* doc/com/jcraft/jsch/KeyPairGenRSA.html
+* doc/com/jcraft/jsch/KeyPairRSA.html
+* doc/com/jcraft/jsch/KnownHosts.html
+* doc/com/jcraft/jsch/Logger.html
+* doc/com/jcraft/jsch/MAC.html
+* doc/com/jcraft/jsch/Packet.html
+* doc/com/jcraft/jsch/Proxy.html
+* doc/com/jcraft/jsch/ProxyHTTP.html
+* doc/com/jcraft/jsch/ProxySOCKS4.html
+* doc/com/jcraft/jsch/ProxySOCKS5.html
+* doc/com/jcraft/jsch/Random.html
+* doc/com/jcraft/jsch/RequestSftp.html
+* doc/com/jcraft/jsch/RequestSubsystem.html
+* doc/com/jcraft/jsch/ServerSocketFactory.html
+* doc/com/jcraft/jsch/Session.html
+* doc/com/jcraft/jsch/SftpATTRS.html
+* doc/com/jcraft/jsch/SftpException.html
+* doc/com/jcraft/jsch/SftpProgressMonitor.html
+* doc/com/jcraft/jsch/SignatureDSA.html
+* doc/com/jcraft/jsch/SignatureRSA.html
+* doc/com/jcraft/jsch/SocketFactory.html
+* doc/com/jcraft/jsch/UIKeyboardInteractive.html
+* doc/com/jcraft/jsch/UserAuth.html
+* doc/com/jcraft/jsch/UserAuthGSSAPIWithMIC.html
+* doc/com/jcraft/jsch/UserInfo.html
+* doc/com/jcraft/jsch/class-use/
+* doc/com/jcraft/jsch/class-use/Buffer.html
+* doc/com/jcraft/jsch/class-use/Channel.html
+* doc/com/jcraft/jsch/class-use/ChannelDirectTCPIP.html
+* doc/com/jcraft/jsch/class-use/ChannelExec.html
+* doc/com/jcraft/jsch/class-use/ChannelForwardedTCPIP.html
+* doc/com/jcraft/jsch/class-use/ChannelSftp.LsEntry.html
+* doc/com/jcraft/jsch/class-use/ChannelSftp.LsEntrySelector.html
+* doc/com/jcraft/jsch/class-use/ChannelSftp.html
+* doc/com/jcraft/jsch/class-use/ChannelShell.html
+* doc/com/jcraft/jsch/class-use/ChannelSubsystem.html
+* doc/com/jcraft/jsch/class-use/Cipher.html
+* doc/com/jcraft/jsch/class-use/CipherNone.html
+* doc/com/jcraft/jsch/class-use/Compression.html
+* doc/com/jcraft/jsch/class-use/DH.html
+* doc/com/jcraft/jsch/class-use/DHG1.html
+* doc/com/jcraft/jsch/class-use/DHG14.html
+* doc/com/jcraft/jsch/class-use/DHGEX.html
+* doc/com/jcraft/jsch/class-use/ForwardedTCPIPDaemon.html
+* doc/com/jcraft/jsch/class-use/GSSContext.html
+* doc/com/jcraft/jsch/class-use/HASH.html
+* doc/com/jcraft/jsch/class-use/HostKey.html
+* doc/com/jcraft/jsch/class-use/HostKeyRepository.html
+* doc/com/jcraft/jsch/class-use/IO.html
+* doc/com/jcraft/jsch/class-use/Identity.html
+* doc/com/jcraft/jsch/class-use/IdentityRepository.html
+* doc/com/jcraft/jsch/class-use/JSch.html
+* doc/com/jcraft/jsch/class-use/JSchException.html
+* doc/com/jcraft/jsch/class-use/KeyExchange.html
+* doc/com/jcraft/jsch/class-use/KeyPair.html
+* doc/com/jcraft/jsch/class-use/KeyPairDSA.html
+* doc/com/jcraft/jsch/class-use/KeyPairGenDSA.html
+* doc/com/jcraft/jsch/class-use/KeyPairGenRSA.html
+* doc/com/jcraft/jsch/class-use/KeyPairRSA.html
+* doc/com/jcraft/jsch/class-use/KnownHosts.html
+* doc/com/jcraft/jsch/class-use/Logger.html
+* doc/com/jcraft/jsch/class-use/MAC.html
+* doc/com/jcraft/jsch/class-use/Packet.html
+* doc/com/jcraft/jsch/class-use/Proxy.html
+* doc/com/jcraft/jsch/class-use/ProxyHTTP.html
+* doc/com/jcraft/jsch/class-use/ProxySOCKS4.html
+* doc/com/jcraft/jsch/class-use/ProxySOCKS5.html
+* doc/com/jcraft/jsch/class-use/Random.html
+* doc/com/jcraft/jsch/class-use/RequestSftp.html
+* doc/com/jcraft/jsch/class-use/RequestSubsystem.html
+* doc/com/jcraft/jsch/class-use/ServerSocketFactory.html
+* doc/com/jcraft/jsch/class-use/Session.html
+* doc/com/jcraft/jsch/class-use/SftpATTRS.html
+* doc/com/jcraft/jsch/class-use/SftpException.html
+* doc/com/jcraft/jsch/class-use/SftpProgressMonitor.html
+* doc/com/jcraft/jsch/class-use/SignatureDSA.html
+* doc/com/jcraft/jsch/class-use/SignatureRSA.html
+* doc/com/jcraft/jsch/class-use/SocketFactory.html
+* doc/com/jcraft/jsch/class-use/UIKeyboardInteractive.html
+* doc/com/jcraft/jsch/class-use/UserAuth.html
+* doc/com/jcraft/jsch/class-use/UserAuthGSSAPIWithMIC.html
+* doc/com/jcraft/jsch/class-use/UserInfo.html
+* doc/com/jcraft/jsch/jce/
+* doc/com/jcraft/jsch/jce/AES128CBC.html
+* doc/com/jcraft/jsch/jce/AES128CTR.html
+* doc/com/jcraft/jsch/jce/AES192CBC.html
+* doc/com/jcraft/jsch/jce/AES192CTR.html
+* doc/com/jcraft/jsch/jce/AES256CBC.html
+* doc/com/jcraft/jsch/jce/AES256CTR.html
+* doc/com/jcraft/jsch/jce/ARCFOUR.html
+* doc/com/jcraft/jsch/jce/ARCFOUR128.html
+* doc/com/jcraft/jsch/jce/ARCFOUR256.html
+* doc/com/jcraft/jsch/jce/BlowfishCBC.html
+* doc/com/jcraft/jsch/jce/DH.html
+* doc/com/jcraft/jsch/jce/HMACMD5.html
+* doc/com/jcraft/jsch/jce/HMACMD596.html
+* doc/com/jcraft/jsch/jce/HMACSHA1.html
+* doc/com/jcraft/jsch/jce/HMACSHA196.html
+* doc/com/jcraft/jsch/jce/KeyPairGenDSA.html
+* doc/com/jcraft/jsch/jce/KeyPairGenRSA.html
+* doc/com/jcraft/jsch/jce/MD5.html
+* doc/com/jcraft/jsch/jce/Random.html
+* doc/com/jcraft/jsch/jce/SHA1.html
+* doc/com/jcraft/jsch/jce/SignatureDSA.html
+* doc/com/jcraft/jsch/jce/SignatureRSA.html
+* doc/com/jcraft/jsch/jce/TripleDESCBC.html
+* doc/com/jcraft/jsch/jce/TripleDESCTR.html
+* doc/com/jcraft/jsch/jce/class-use/
+* doc/com/jcraft/jsch/jce/class-use/AES128CBC.html
+* doc/com/jcraft/jsch/jce/class-use/AES128CTR.html
+* doc/com/jcraft/jsch/jce/class-use/AES192CBC.html
+* doc/com/jcraft/jsch/jce/class-use/AES192CTR.html
+* doc/com/jcraft/jsch/jce/class-use/AES256CBC.html
+* doc/com/jcraft/jsch/jce/class-use/AES256CTR.html
+* doc/com/jcraft/jsch/jce/class-use/ARCFOUR.html
+* doc/com/jcraft/jsch/jce/class-use/ARCFOUR128.html
+* doc/com/jcraft/jsch/jce/class-use/ARCFOUR256.html
+* doc/com/jcraft/jsch/jce/class-use/BlowfishCBC.html
+* doc/com/jcraft/jsch/jce/class-use/DH.html
+* doc/com/jcraft/jsch/jce/class-use/HMACMD5.html
+* doc/com/jcraft/jsch/jce/class-use/HMACMD596.html
+* doc/com/jcraft/jsch/jce/class-use/HMACSHA1.html
+* doc/com/jcraft/jsch/jce/class-use/HMACSHA196.html
+* doc/com/jcraft/jsch/jce/class-use/KeyPairGenDSA.html
+* doc/com/jcraft/jsch/jce/class-use/KeyPairGenRSA.html
+* doc/com/jcraft/jsch/jce/class-use/MD5.html
+* doc/com/jcraft/jsch/jce/class-use/Random.html
+* doc/com/jcraft/jsch/jce/class-use/SHA1.html
+* doc/com/jcraft/jsch/jce/class-use/SignatureDSA.html
+* doc/com/jcraft/jsch/jce/class-use/SignatureRSA.html
+* doc/com/jcraft/jsch/jce/class-use/TripleDESCBC.html
+* doc/com/jcraft/jsch/jce/class-use/TripleDESCTR.html
+* doc/com/jcraft/jsch/jce/package-frame.html
+* doc/com/jcraft/jsch/jce/package-summary.html
+* doc/com/jcraft/jsch/jce/package-tree.html
+* doc/com/jcraft/jsch/jce/package-use.html
+* doc/com/jcraft/jsch/jcraft/
+* doc/com/jcraft/jsch/jcraft/Compression.html
+* doc/com/jcraft/jsch/jcraft/HMACMD5.html
+* doc/com/jcraft/jsch/jcraft/HMACMD596.html
+* doc/com/jcraft/jsch/jcraft/HMACSHA1.html
+* doc/com/jcraft/jsch/jcraft/HMACSHA196.html
+* doc/com/jcraft/jsch/jcraft/class-use/
+* doc/com/jcraft/jsch/jcraft/class-use/Compression.html
+* doc/com/jcraft/jsch/jcraft/class-use/HMACMD5.html
+* doc/com/jcraft/jsch/jcraft/class-use/HMACMD596.html
+* doc/com/jcraft/jsch/jcraft/class-use/HMACSHA1.html
+* doc/com/jcraft/jsch/jcraft/class-use/HMACSHA196.html
+* doc/com/jcraft/jsch/jcraft/package-frame.html
+* doc/com/jcraft/jsch/jcraft/package-summary.html
+* doc/com/jcraft/jsch/jcraft/package-tree.html
+* doc/com/jcraft/jsch/jcraft/package-use.html
+* doc/com/jcraft/jsch/jgss/
+* doc/com/jcraft/jsch/jgss/GSSContextKrb5.html
+* doc/com/jcraft/jsch/jgss/class-use/
+* doc/com/jcraft/jsch/jgss/class-use/GSSContextKrb5.html
+* doc/com/jcraft/jsch/jgss/package-frame.html
+* doc/com/jcraft/jsch/jgss/package-summary.html
+* doc/com/jcraft/jsch/jgss/package-tree.html
+* doc/com/jcraft/jsch/jgss/package-use.html
+* doc/com/jcraft/jsch/package-frame.html
+* doc/com/jcraft/jsch/package-summary.html
+* doc/com/jcraft/jsch/package-tree.html
+* doc/com/jcraft/jsch/package-use.html
+* doc/constant-values.html
+* doc/deprecated-list.html
+* doc/help-doc.html
+* doc/index-files/
+* doc/index-files/index-1.html
+* doc/index-files/index-10.html
+* doc/index-files/index-11.html
+* doc/index-files/index-12.html
+* doc/index-files/index-13.html
+* doc/index-files/index-14.html
+* doc/index-files/index-15.html
+* doc/index-files/index-16.html
+* doc/index-files/index-17.html
+* doc/index-files/index-18.html
+* doc/index-files/index-19.html
+* doc/index-files/index-2.html
+* doc/index-files/index-20.html
+* doc/index-files/index-21.html
+* doc/index-files/index-22.html
+* doc/index-files/index-23.html
+* doc/index-files/index-24.html
+* doc/index-files/index-3.html
+* doc/index-files/index-4.html
+* doc/index-files/index-5.html
+* doc/index-files/index-6.html
+* doc/index-files/index-7.html
+* doc/index-files/index-8.html
+* doc/index-files/index-9.html
+* doc/index.html
+* doc/overview-frame.html
+* doc/overview-summary.html
+* doc/overview-tree.html
+* doc/package-frame.html
+* doc/package-list
+* doc/package-summary.html
+* doc/package-tree.html
+* doc/package-use.html
+* doc/resources/
+* doc/resources/inherit.gif
+* doc/serialized-form.html
+* doc/stylesheet.css
+* ic_launcher-web.png
+* proguard-project.txt
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:18.0.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* libs/commons-net-ftp-2.0.jar => app/libs/commons-net-ftp-2.0.jar
+* libs/jsch-0.1.48.jar => app/libs/jsch-0.1.48.jar
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
