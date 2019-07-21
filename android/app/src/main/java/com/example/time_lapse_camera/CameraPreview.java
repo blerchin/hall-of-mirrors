@@ -156,7 +156,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 			params.setGpsLatitude(location.getLatitude());
 			params.setGpsLongitude(location.getLongitude());
 			params.setGpsAltitude(location.getAltitude());
-			params.setGpsTimestamp(location.getTime());
+			params.setGpsTimestamp(location.getTime() / 1000);
 			params.setGpsProcessingMethod(location.getProvider());
 		}
 		camera.setParameters(params);
