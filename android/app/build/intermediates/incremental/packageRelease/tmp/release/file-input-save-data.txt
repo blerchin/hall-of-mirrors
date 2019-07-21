@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Sat Jul 20 14:00:44 PDT 2019
-0.baseType=DIRECTORY
-0.base=/opt/view-from-below/android/app/build/intermediates/dex/release/mergeDexRelease/out
-0.path=classes.dex
-0.set=DEX
-count=1

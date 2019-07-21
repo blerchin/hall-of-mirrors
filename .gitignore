@@ -1,1 +1,5 @@
 server/uploads
+.DS_Store
+*.swp
+android/app/build
+android/.gradle

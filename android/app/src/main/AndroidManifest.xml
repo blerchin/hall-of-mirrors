@@ -33,10 +33,16 @@
             <intent-filter>
             	<action android:name="com.mhzmaster.tlpt.START" />
             	<action android:name="com.mhzmaster.tlpt.STOP" />
-            </intent-filter> 
-            
+            </intent-filter>
+
         </service>
-        
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.mhzmaster.tlpt.START" />
+            </intent-filter>
+        </receiver>
+
     </application>
     
   
