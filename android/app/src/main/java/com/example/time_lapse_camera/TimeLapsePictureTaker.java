@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.app.AlarmManager;
+import android.widget.Toast;
+
 import java.util.List;
 
 public class TimeLapsePictureTaker extends Service {
@@ -56,8 +58,8 @@ public class TimeLapsePictureTaker extends Service {
                 String mAction = intent.getAction();
                 Log.v(TAG,"received broadcast "+mAction);
                 if (mAction.contains(INCOMING_STOP_ACTION) ) {
-                    stopSelf();
                     unscheduleNext();
+                    stopSelf();
                 }
             }
         };
@@ -90,6 +92,8 @@ public class TimeLapsePictureTaker extends Service {
     @Override
     public void onDestroy(){
         cleanUp();
+        // Tell the user we stopped.
+        Toast.makeText(this, R.string.picture_taker_stopped, Toast.LENGTH_SHORT).show();
         ctx.unregisterReceiver(mIntentReceiver);
     }
 
@@ -155,7 +159,7 @@ public class TimeLapsePictureTaker extends Service {
         AsyncTask<URI,Void,Long> upload = new UploadHTTP().execute(pathToFile);
         while(upload.getStatus() == AsyncTask.Status.PENDING) {}
         scheduleNext();
-        stopSelf();
+        //stopSelf();
     }
 
     public void initializeCameraPreview(){

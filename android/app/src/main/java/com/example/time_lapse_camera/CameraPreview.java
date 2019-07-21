@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 
 
 import android.content.Context;
@@ -15,6 +16,8 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,6 +29,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	
     private SurfaceHolder mHolder;
     private Camera mCamera;
+    private int saveCount = 0;
 
 	public static abstract class CameraPreviewCallback {
 		public void onPreviewSaved(URI pathToFile){
@@ -106,40 +110,71 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 
-    void savePreview(byte[] data, Camera camera) {
-		int previewFormat = camera.getParameters().getPreviewFormat();
-		if (previewFormat != android.graphics.ImageFormat.NV21) {
-			Log.d(TAG, "Preview Image is in wrong format");
-			return;
-		}
-		Camera.Size previewSize = camera.getParameters().getPreviewSize();
-		Rect previewRect = new Rect(0, 0, previewSize.width, previewSize.height);
-		YuvImage yuvImage = new YuvImage(data, previewFormat, previewSize.width, previewSize.height, null);
-		File saveFile = null;
-		Date mDate = new Date();
-		try {
-			saveFile = getOutputMediaFile(mDate);
-		} catch(IOException e) {
-			Log.d(TAG,"Couldn't create media file");
-		}
-		OutputStream outToFile = null;
-		try {
-			outToFile = new BufferedOutputStream( new FileOutputStream(saveFile), 8192 );
-			yuvImage.compressToJpeg(previewRect, 50, outToFile);
-		} catch(FileNotFoundException e) {
-			Log.d(TAG,"File wasn't created properly: "+e.getMessage());
-		} finally {
-			if(outToFile != null) {
-				try{
-					outToFile.close();
-					onSavePreview(saveFile.toURI());
-				} catch (IOException ie) {
-					Log.d(TAG,"File did not close");
-				}
-			} else {
-				Log.d(TAG,"Preview Image did not save.");
+	Camera.Size getPictureSize(Camera.Parameters cameraParams) {
+    	int goalSize = 2048;
+    	int index = 0;
+    	int bestErr = goalSize;
+		List<Camera.Size> sizes = cameraParams.getSupportedPictureSizes();
+		for(int i = 0; i < sizes.size(); i++) {
+			int err = Math.abs(sizes.get(i).width - goalSize);
+			if (err < bestErr) {
+				index = i;
+				bestErr = err;
 			}
 		}
+		return sizes.get(index);
+	}
+
+	Location getLastKnownLocation() {
+    	LocationManager lm = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
+
+		boolean isGPSEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		boolean isNetworkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		if (!isGPSEnabled && !isNetworkEnabled) {
+			return null;
+		} else if (isGPSEnabled) {
+			return lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		} else {
+			return lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		}
+	}
+
+    void savePreview(byte[] data, Camera camera) {
+    	if (saveCount > 0) {
+    		return;
+		}
+    	saveCount++;
+		Camera.Parameters params = camera.getParameters();
+		params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+		params.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+		Camera.Size size = getPictureSize(params);
+		params.setPictureSize(size.width, size.height);
+		params.setJpegQuality(50);
+		params.setSceneMode(Camera.Parameters.SCENE_MODE_NIGHT);
+		Location location = getLastKnownLocation();
+		if (location != null) {
+			params.setGpsLatitude(location.getLatitude());
+			params.setGpsLongitude(location.getLongitude());
+			params.setGpsAltitude(location.getAltitude());
+			params.setGpsTimestamp(location.getTime());
+			params.setGpsProcessingMethod(location.getProvider());
+		}
+		camera.setParameters(params);
+
+		camera.takePicture(null, null, new Camera.PictureCallback() {
+			@Override
+			public void onPictureTaken(byte[] bytes, Camera camera) {
+				Date mDate = new Date();
+				try {
+					File saveFile = getOutputMediaFile(mDate);
+					OutputStream outToFile = new FileOutputStream(saveFile);
+					outToFile.write(bytes);
+					onSavePreview(saveFile.toURI());
+				} catch(IOException e) {
+					Log.d(TAG,"Couldn't create media file");
+				}
+			}
+		});
 	}
     
    public void setPreviewCallback(){

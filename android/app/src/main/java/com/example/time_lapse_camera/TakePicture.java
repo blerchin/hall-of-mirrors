@@ -47,8 +47,6 @@ public class TakePicture extends Activity{
     }
     public void stopCapture( View view ) {
         stopCapture();
-        // Tell the user we stopped.
-        Toast.makeText(this, R.string.picture_taker_stopped, Toast.LENGTH_SHORT).show();
     }
     public void stopCapture() {
     	Intent stopCapture = new Intent(CAPTURE_INTENT_STOP);
