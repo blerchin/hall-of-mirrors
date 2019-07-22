@@ -3,3 +3,4 @@ server/uploads
 *.swp
 android/app/build
 android/.gradle
+s3credentials.json

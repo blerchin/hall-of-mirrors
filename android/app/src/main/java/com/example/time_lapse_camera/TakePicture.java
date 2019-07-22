@@ -1,29 +1,15 @@
 package com.example.time_lapse_camera;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
+
 
 public class TakePicture extends Activity{
-	
 	private static final String TAG = "TakePicture";
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
 	Context context = this;
 	
 	private static final String CAPTURE_INTENT_START = "com.mhzmaster.tlpt.START";

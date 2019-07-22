@@ -1,8 +1,6 @@
 package com.example.time_lapse_camera;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,8 +10,6 @@ import java.util.List;
 
 
 import android.content.Context;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
 import android.hardware.Camera;
 
 import android.location.Location;

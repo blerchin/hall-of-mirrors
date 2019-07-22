@@ -28,4 +28,7 @@ dependencies {
     compile 'com.android.support:support-v4:18.0.0'
     compile files('libs/commons-net-ftp-2.0.jar')
     compile files('libs/jsch-0.1.48.jar')
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.7.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.7.+'
+
 }

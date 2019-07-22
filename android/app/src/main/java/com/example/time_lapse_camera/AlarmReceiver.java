@@ -3,10 +3,7 @@ package com.example.time_lapse_camera;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.os.PowerManager;
 import android.util.Log;
-
-import static android.content.Context.POWER_SERVICE;
 
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {

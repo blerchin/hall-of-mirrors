@@ -156,7 +156,8 @@ public class TimeLapsePictureTaker extends Service {
 
     final void previewWasSaved(URI pathToFile) {
         cleanUp();
-        AsyncTask<URI,Void,Long> upload = new UploadHTTP().execute(pathToFile);
+        UploadS3 s3 = new UploadS3();
+        AsyncTask<URI,Void,Long> upload = s3.execute(pathToFile);
         while(upload.getStatus() == AsyncTask.Status.PENDING) {}
         scheduleNext();
         //stopSelf();
