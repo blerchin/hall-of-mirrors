@@ -173,9 +173,9 @@ public class TimeLapsePictureTaker extends Service {
             } catch (Exception e) {
                 e.getStackTrace();
             }
-            cp.setOnSavePreview(new CameraPreview.CameraPreviewCallback() {
+            cp.setOnSavePicture(new CameraPreview.CameraPictureCallback() {
                 @Override
-                public void onPreviewSaved(URI pathToFile) {
+                public void onPictureSaved(URI pathToFile) {
                     previewWasSaved(pathToFile);
                 }
             });

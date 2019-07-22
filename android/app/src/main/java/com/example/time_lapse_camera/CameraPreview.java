@@ -27,12 +27,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private int saveCount = 0;
 
-	public static abstract class CameraPreviewCallback {
-		public void onPreviewSaved(URI pathToFile){
+	public static abstract class CameraPictureCallback {
+		public void onPictureSaved(URI pathToFile){
 		}
 	}
 
-	private CameraPreviewCallback callback;
+	private CameraPictureCallback callback;
 
 	public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -96,13 +96,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
     }
 
-	public void setOnSavePreview(CameraPreviewCallback cb) {
+	public void setOnSavePicture(CameraPictureCallback cb) {
     	callback = cb;
 	}
 
-	void onSavePreview(URI pathToFile) {
+	void onSavePicture(URI pathToFile) {
     	if (callback != null) {
-			callback.onPreviewSaved(pathToFile);
+			callback.onPictureSaved(pathToFile);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 
-    void savePreview(byte[] data, Camera camera) {
+    void savePicture(Camera camera) {
     	if (saveCount > 0) {
     		return;
 		}
@@ -165,7 +165,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 					File saveFile = getOutputMediaFile(mDate);
 					OutputStream outToFile = new FileOutputStream(saveFile);
 					outToFile.write(bytes);
-					onSavePreview(saveFile.toURI());
+					onSavePicture(saveFile.toURI());
 				} catch(IOException e) {
 					Log.d(TAG,"Couldn't create media file");
 				}
@@ -181,7 +181,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
    					@Override
    					public void onPreviewFrame(byte[] data, Camera camera) {
 						Log.d(TAG, "Preview Callback");
-						savePreview(data, camera);
+						savePicture(camera);
 					}
    				});
        } catch (Exception e){
