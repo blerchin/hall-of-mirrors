@@ -1,0 +1,36 @@
+html
+  head
+    title= "admin panel"
+  body
+    h1= "Admin Panel"
+
+    h3= "View Websocket"
+    div(id="ws-buffer" style='border: 1px solid #000;')
+    br
+    form(id="ws-send-form")
+      input(type="text" placeholder="Send a command")
+      input(type="submit" value="Send")
+
+    h3= "Manual Capture"
+    button(id="capture-button")= "Capture"
+
+    script.
+      var ws = new WebSocket('ws://' + location.host);
+      var buffer = document.getElementById('ws-buffer');
+      ws.onmessage = function(evt) {
+        var msg = document.createElement('p');
+        msg.innerHTML = evt.data;
+        buffer.appendChild(msg);
+      };
+
+      var button = document.getElementById('capture-button');
+      button.addEventListener('click', function() {
+        fetch('/capture', { method: 'POST' });
+      });
+
+      var sendForm = document.getElementById('ws-send-form');
+      sendForm.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+        var msg = sendForm.querySelector('input[type=text]').value;
+        ws.send(JSON.stringify({ command: msg }));
+      })
