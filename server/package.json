@@ -17,6 +17,7 @@
     "express": "4.17.1",
     "express-promise-router": "3.0.3",
     "express-ws": "4.0.0",
+    "method-override": "3.0.0",
     "node-pg-migrate": "3.22.0",
     "pg": "7.12.1",
     "pug": "2.0.4"

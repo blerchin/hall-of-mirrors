@@ -2,13 +2,16 @@ require('dotenv').config();
 
 const express = require('express');
 const expressWs = require('express-ws');
+const methodOverride = require('method-override');
 const fs = require('fs');
 const db = require('./db');
 const pubSub = require('./pubSub');
 const setRoutes = require('./routes');
 
 const app = express();
+app.use(methodOverride('_method'));
 app.set('view engine', 'pug');
+app.use(express.urlencoded({ extended: true }));
 const websockets = expressWs(app);
 
 const commands = pubSub();
