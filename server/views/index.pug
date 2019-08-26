@@ -25,7 +25,7 @@ html
 
       var button = document.getElementById('capture-button');
       button.addEventListener('click', function() {
-        fetch('/capture', { method: 'POST' });
+        fetch('/api/capture', { method: 'POST' });
       });
 
       var sendForm = document.getElementById('ws-send-form');

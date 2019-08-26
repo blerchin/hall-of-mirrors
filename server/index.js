@@ -4,45 +4,33 @@ const express = require('express');
 const expressWs = require('express-ws');
 const fs = require('fs');
 const db = require('./db');
+const pubSub = require('./pubSub');
+const setRoutes = require('./routes');
 
 const app = express();
 app.set('view engine', 'pug');
 const websockets = expressWs(app);
 
-const pubSub = () => {
-  const subscribers = {};
-  let lastId = 0;
-  return {
-    subscribe: (cb) => {
-      subscribers[lastId] = cb;
-      return lastId++;
-    },
-    send: (command) => {
-      Object.keys(subscribers).forEach((k) => {
-        subscribers[k](JSON.stringify({ command }));
-      });
-    },
-    unsubscribe: (id) => {
-      delete subscribers[id];
-    }
-  };
-}
-
 const commands = pubSub();
 
-const handleResult = (data) => {
+setRoutes(app, commands, db);
+
+const handleWsResult = (data, uuid = null) => {
   if (!data.result) { console.log('Tried to handle an event that was not a result!', data); }
   if (data.result == 'capture:success') {
-    db.createFrame(data);
+    db.createFrame({
+      ...data,
+      uuid
+    }).catch((e) => console.error(e.stack));
   } else {
     console.log("Don't know how to handle result " + data.result );
   }
 }
 
-app.ws('/', (ws, req) => {
+app.ws('/ws/:uuid?', (ws, req) => {
   const socketId = commands.subscribe((command) => {
     ws.send(command);
-  });
+  }, req.params.uuid);
 
   ws.on('message', (msg) => {
     try {
@@ -50,7 +38,7 @@ app.ws('/', (ws, req) => {
       if (data.command) {
         commands.send(data.command);
       } else if (data.result) {
-        handleResult(data);
+        handleWsResult(data, req.params.uuid);
       }
     } catch (SyntaxError) {
       console.log('Unable to parse message: ' + msg);
@@ -68,14 +56,6 @@ app.ws('/', (ws, req) => {
   });
 });
 
-app.get('/', (req, res) => {
-  res.render('index');
-})
-
-app.post('/capture', (req, res) => {
-  commands.send('capture:now');
-  res.sendStatus(200);
-});
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)

@@ -1,0 +1,10 @@
+{
+  "cube" : [
+    { "translation": [0, 0, 71], "rotation": [0, 0, 0] },
+    { "translation": [-71, 0, 0], "rotation": [0, 180, 0] },
+    { "translation": [0, 0, 0], "rotation": [0, 90, 0] },
+    { "translation": [0, 0, 0], "rotation": [0, 90, -90] },
+    { "translation": [-147, 147, 0], "rotation": [0, 90, 90] },
+    { "translation": [-147, 0, 0], "rotation": [0, -90, 0] }
+  ]
+}
