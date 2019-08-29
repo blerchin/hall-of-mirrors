@@ -2,8 +2,9 @@ const Router = require('express-promise-router');
 const router = new Router();
 
 module.exports = (commands, db) => {
-  router.get('/', (req, res) => {
-    res.render('index');
+  router.get('/', async (req, res) => {
+    const layouts = await db.getLayouts();
+    res.render('index', { layouts });
   })
 
   router.get('/cameras', async (req, res) => {

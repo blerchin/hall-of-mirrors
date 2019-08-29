@@ -48,7 +48,8 @@ exports.up = (pgm) => {
     },
     uuid: {
       type: 'varchar(1000)',
-      notNull: true
+      notNull: true,
+      unique: true
     }
   });
 

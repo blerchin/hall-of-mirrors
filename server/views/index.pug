@@ -7,6 +7,23 @@ html
     h3= "View Websocket"
     div(id="ws-buffer" style='border: 1px solid #000;')
     br
+    hr
+
+    h3= "View Layouts"
+    table
+      thead
+        th= "title"
+        th= "cameras"
+      tbody
+        each layout in layouts
+          tr
+            td
+              a(href="/layout/" + layout.id)= layout.title
+            td
+              = layout.count_cameras
+
+    hr
+    br
     form(id="ws-send-form")
       input(type="text" placeholder="Send a command")
       input(type="submit" value="Send")
