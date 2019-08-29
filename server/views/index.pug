@@ -1,53 +1,51 @@
-html
-  head
-    title= "admin panel"
-  body
-    h1= "Admin Panel"
+extends _wrapper.pug
 
-    h3= "View Websocket"
-    div(id="ws-buffer" style='border: 1px solid #000;')
-    br
-    hr
 
-    h3= "View Layouts"
-    table
-      thead
-        th= "title"
-        th= "cameras"
-      tbody
-        each layout in layouts
-          tr
-            td
-              a(href="/layout/" + layout.id)= layout.title
-            td
-              = layout.count_cameras
+block content
+  h3= "View Websocket"
+  div(id="ws-buffer" style='border: 1px solid #000;')
+  br
+  hr
 
-    hr
-    br
-    form(id="ws-send-form")
-      input(type="text" placeholder="Send a command")
-      input(type="submit" value="Send")
+  h3= "View Layouts"
+  table
+    thead
+      th= "title"
+      th= "cameras"
+    tbody
+      each layout in layouts
+        tr
+          td
+            a(href="/layout/" + layout.id)= layout.title
+          td
+            = layout.count_cameras
 
-    h3= "Manual Capture"
-    button(id="capture-button")= "Capture"
+  hr
+  br
+  form(id="ws-send-form")
+    input(type="text" placeholder="Send a command")
+    input(type="submit" value="Send")
 
-    script.
-      var ws = new WebSocket('ws://' + location.host);
-      var buffer = document.getElementById('ws-buffer');
-      ws.onmessage = function(evt) {
-        var msg = document.createElement('p');
-        msg.innerHTML = evt.data;
-        buffer.appendChild(msg);
-      };
+  h3= "Manual Capture"
+  button(id="capture-button")= "Capture"
 
-      var button = document.getElementById('capture-button');
-      button.addEventListener('click', function() {
-        fetch('/api/capture', { method: 'POST' });
-      });
+  script.
+    var ws = new WebSocket('ws://' + location.host);
+    var buffer = document.getElementById('ws-buffer');
+    ws.onmessage = function(evt) {
+      var msg = document.createElement('p');
+      msg.innerHTML = evt.data;
+      buffer.appendChild(msg);
+    };
 
-      var sendForm = document.getElementById('ws-send-form');
-      sendForm.addEventListener('submit', function(evt) {
-        evt.preventDefault();
-        var msg = sendForm.querySelector('input[type=text]').value;
-        ws.send(JSON.stringify({ command: msg }));
-      })
+    var button = document.getElementById('capture-button');
+    button.addEventListener('click', function() {
+      fetch('/api/capture', { method: 'POST' });
+    });
+
+    var sendForm = document.getElementById('ws-send-form');
+    sendForm.addEventListener('submit', function(evt) {
+      evt.preventDefault();
+      var msg = sendForm.querySelector('input[type=text]').value;
+      ws.send(JSON.stringify({ command: msg }));
+    })

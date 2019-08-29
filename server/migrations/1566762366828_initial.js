@@ -39,12 +39,11 @@ exports.up = (pgm) => {
     currentLayout: {
       type: 'integer',
       references: '"layouts"',
-      onDelete: 'cascade'
     },
     currentPosition: {
       type: 'integer',
       references: '"positions"',
-      onDelete: 'cascade'
+      unique: true
     },
     uuid: {
       type: 'varchar(1000)',

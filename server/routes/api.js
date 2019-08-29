@@ -1,7 +1,7 @@
 const Router = require('express-promise-router');
-const router = new Router();
 
 module.exports = (commands, db) => {
+  const router = new Router();
   router.post('/layout/:id/capture', async (req, res) => {
     const captureId = await db.createCapture({ layoutId: req.params.id });
     const uuids = await db.getUUIDsByLayoutId(req.params.id);

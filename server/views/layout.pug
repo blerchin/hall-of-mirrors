@@ -1,0 +1,33 @@
+extends _wrapper.pug
+include _mixins/vector_field.pug
+
+block content
+  h3 Editing Layout "#{layout.title}"
+
+  div(id="viewerContext" design-url=`/scad/layout/${layout.id}.jscad` style="height: 700px;")
+
+  h3 Positions
+
+  table
+    thead
+      th id
+      th translation
+      th rotation
+      th camera_id
+      th camera_uuid
+    tbody
+      each position in layout.positions
+        tr
+          form(action=`/layout/${layout.id}/position/${position.id}?_method=PUT` method="POST")
+            td= position.id
+            td
+              +vector_field("translation", position.translation)
+            td
+              +vector_field("rotation", position.rotation)
+            td= position.camera_id
+            td= position.camera_uuid
+            td
+              input(type="submit" value="Update")
+
+
+    script(type="text/javascript" src="/openscad/min.js")

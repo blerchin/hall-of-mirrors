@@ -23,6 +23,14 @@ const createPosition = async ({ layoutId, rotation, translation}) => {
   return rows[0].id;
 }
 
+const updatePosition = async (id, attr) => {
+  const { rotation, translation } = attr;
+  await pool.query(
+    'UPDATE positions SET rotation = $1, translation = $2 WHERE id = $3',
+    [rotation, translation, id]
+  );
+}
+
 const createCamera = async ({ uuid }) => {
   const { rows } = await pool.query(
     'INSERT INTO cameras(uuid) VALUES($1) RETURNING id',
@@ -48,15 +56,22 @@ const createCapture = async ({ layoutId }) => {
 
 const getLayouts = async () => {
   const { rows } = await pool.query(
-    'SELECT layouts.id, layouts.title, COUNT(cameras.id) AS count_cameras FROM layouts LEFT OUTER JOIN cameras ON layouts.id = "cameras"."currentLayout" GROUP BY layouts.id ORDER BY count_cameras DESC'
+    'SELECT id, layouts.title, COUNT(cameras.id) AS count_cameras FROM layouts LEFT OUTER JOIN cameras ON layouts.id = "cameras"."currentLayout" GROUP BY layouts.id ORDER BY count_cameras DESC'
   );
   return rows;
 };
 
-const getPositionsWithLayouts = async () => {
-  const { rows } = await pool.query('SELECT * FROM positions INNER JOIN layouts on "positions.layoutId" = layouts.id');
-  return rows;
-};
+const getLayoutWithPositions = async (id) => {
+  const { rows: layoutRows } = await pool.query('SELECT * FROM layouts WHERE id = $1', [id]);
+  const { rows: positionRows } = await pool.query(
+    'SELECT positions.id, positions.translation, positions.rotation, cameras.id AS camera_id, cameras.uuid AS camera_uuid FROM positions LEFT JOIN cameras ON positions.id = "cameras"."currentPosition" WHERE "layoutId" = $1',
+    [id]
+  );
+  return {
+    ...layoutRows[0],
+    positions: positionRows
+  }
+}
 
 const getUUIDsByLayoutId = async (layoutId) => {
   const { rows } = await pool.query(
@@ -71,10 +86,11 @@ module.exports = {
   createCapture,
   createFrame,
   createPosition,
+  updatePosition,
   deleteCamera,
   getCameras,
   getLayouts,
-  getPositionsWithLayouts,
+  getLayoutWithPositions,
   getUUIDsByLayoutId,
   pool
 };

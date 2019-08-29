@@ -12,6 +12,7 @@ const app = express();
 app.use(methodOverride('_method'));
 app.set('view engine', 'pug');
 app.use(express.urlencoded({ extended: true }));
+app.use('/openscad', express.static(__dirname + '/node_modules/@jscad/web/dist/'));
 const websockets = expressWs(app);
 
 const commands = pubSub();

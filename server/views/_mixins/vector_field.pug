@@ -1,0 +1,7 @@
+mixin vector_field(name, value)
+  table
+    tbody
+      tr
+        td <input type="text" name="#{name}[0]" placeholder="x" size="5" value="#{value[0]}">
+        td <input type="text" name="#{name}[1]" placeholder="y" size="5" value="#{value[1]}">
+        td <input type="text" name="#{name}[2]" placeholder="z" size="5" value="#{value[2]}">
