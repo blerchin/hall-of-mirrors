@@ -4,7 +4,7 @@
     { "translation": [142, 0, 71], "rotation": [0, 180, 0], "uuid": 358720061814506 },
     { "translation": [0, 0, 71], "rotation": [0, 90, 0], "uuid": 352678071366600 },
     { "translation": [147, 0, 71], "rotation": [0, 90, 90], "uuid": 352679077476633 },
-    { "translation": [0, 147, 71], "rotation": [0, 90, -90] },
+    { "translation": [0, 147, 71], "rotation": [0, 90, -90], "uuid": 352678076759015 },
     { "translation": [147, 0, 0], "rotation": [0, -90, 0] }
   ]
 }

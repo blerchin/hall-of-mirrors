@@ -31,10 +31,11 @@ const handleWsResult = (data, uuid = null) => {
   }
 }
 
-app.ws('/ws/:uuid?', (ws, req) => {
+app.ws('/ws/:uuid', (ws, req) => {
+  const { uuid } = req.params;
   const socketId = commands.subscribe((command) => {
     ws.send(command);
-  }, req.params.uuid);
+  }, uuid);
 
   ws.on('message', (msg) => {
     try {
