@@ -40,8 +40,7 @@ public class UploadS3 extends AsyncTask<URI, Void, Long> {
             File credFile = new File(dir, "s3credentials.json");
             if (!credFile.exists()) {
                 (new FileOutputStream(credFile)).write("put credentials here!".getBytes());
-                Log.d(TAG, "Credentials file not found.");
-                return;
+                throw new IOException("Credentials file not found.");
             }
             FileInputStream is = new FileInputStream(credFile);
             byte[] data = new byte[is.available()];
