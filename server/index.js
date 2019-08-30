@@ -67,4 +67,4 @@ app.use(function (err, req, res, next) {
   res && res.status(500).send('Something broke!');
 })
 
-app.listen(8000);
+app.listen(process.env.PORT || 8000);

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "migrate": "node-pg-migrate",
+    "migrate": "node-pg-migrate up",
     "seed": "node db/seed.js",
     "setup": "createdb view-from-below && npm run migrate up && npm run seed",
     "test": "echo \"Error: no test specified\" && exit 1"
