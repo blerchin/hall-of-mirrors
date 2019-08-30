@@ -47,8 +47,8 @@ const getCameras = async () => {
 }
 
 const createCapture = async ({ layoutId }) => {
-  const { rows } = pool.query(
-    'INSERT INTO captures(layoutId) VALUES($1) RETURNING id',
+  const { rows } = await pool.query(
+    'INSERT INTO captures("layoutId") VALUES($1) RETURNING id',
     [layoutId]
   );
   return rows[0].id;
@@ -83,7 +83,7 @@ const getLayoutWithPositions = async (id) => {
 
 const getUUIDsByLayoutId = async (layoutId) => {
   const { rows } = await pool.query(
-    'SELECT uuid FROM cameras WHERE "cameras.layoutId" = $1',
+    'SELECT uuid FROM cameras WHERE cameras."currentLayout" = $1',
     [layoutId]
   );
   return rows.map((r) => r.uuid);

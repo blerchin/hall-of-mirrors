@@ -11,7 +11,12 @@ module.exports = () => {
       const ids = targetIds || Object.keys(subscribers);
       ids.forEach((k) => {
         const message = JSON.stringify({ command, data });
-        subscribers[k](message);
+        if (subscribers[k]) {
+          subscribers[k](message);
+          console.log(`sending message to subscriber ${k}`);
+        } else {
+          console.log(`could not find subscriber ${k}`);
+        }
       });
     },
     unsubscribe: (id) => {
