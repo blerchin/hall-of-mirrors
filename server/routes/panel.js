@@ -10,7 +10,8 @@ module.exports = (commands, db) => {
   router.get('/layout/:id', async (req, res) => {
     const { id } = req.params;
     const layout = await db.getLayoutWithPositions(id);
-    res.render('layout', { layout });
+    const captures = await db.getCaptures(id);
+    res.render('layout', { captures, layout });
   });
 
   router.put('/layout/:layoutId/position/:positionId', async (req, res) => {

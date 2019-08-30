@@ -2,7 +2,7 @@ extends _wrapper.pug
 include _mixins/vector_field.pug
 
 block content
-  h3 Editing Layout "#{layout.title}"
+  h3 Managing Layout "#{layout.title}"
 
   div(id="viewerContext" design-url=`/scad/layout/${layout.id}.jscad` style="height: 700px;")
 
@@ -31,3 +31,15 @@ block content
 
 
     script(type="text/javascript" src="/openscad/min.js")
+
+  br
+
+  form(action=`/layouts/${layout.id}/capture` method="POST")
+    input(type="submit" value="Capture Now")
+
+
+  h3 Captures
+    each capture in captures
+      a(href=`layout/${layout.id}/capture/${capture.id}`)
+        img(src=capture.s3Key)
+        p capture.createdAt

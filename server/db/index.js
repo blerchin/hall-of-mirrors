@@ -54,9 +54,17 @@ const createCapture = async ({ layoutId }) => {
   return rows[0].id;
 };
 
+const getCaptures = async (layoutId) => {
+  const { rows } = await pool.query(
+    'SELECT captures.id, captures."createdAt", frames."positionId", frames."s3Key", frames."createdAt" FROM captures INNER JOIN frames ON captures.id = frames."captureId" WHERE captures."layoutId" = $1',
+    [layoutId]
+  );
+  return rows;
+};
+
 const getLayouts = async () => {
   const { rows } = await pool.query(
-    'SELECT id, layouts.title, COUNT(cameras.id) AS count_cameras FROM layouts LEFT OUTER JOIN cameras ON layouts.id = "cameras"."currentLayout" GROUP BY layouts.id ORDER BY count_cameras DESC'
+    'SELECT layouts.id, layouts.title, COUNT(cameras.id) AS count_cameras FROM layouts LEFT OUTER JOIN cameras ON layouts.id = "cameras"."currentLayout" GROUP BY layouts.id ORDER BY count_cameras DESC'
   );
   return rows;
 };
@@ -89,6 +97,7 @@ module.exports = {
   updatePosition,
   deleteCamera,
   getCameras,
+  getCaptures,
   getLayouts,
   getLayoutWithPositions,
   getUUIDsByLayoutId,
