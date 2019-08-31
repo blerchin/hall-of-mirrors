@@ -40,9 +40,7 @@ app.ws('/ws/:uuid', (ws, req) => {
   ws.on('message', (msg) => {
     try {
       const data = JSON.parse(msg);
-      if (data.command) {
-        commands.send(data.command);
-      } else if (data.result) {
+      if (data.result) {
         handleWsResult(data, req.params.uuid);
       }
     } catch (SyntaxError) {
