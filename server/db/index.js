@@ -6,11 +6,11 @@ const pool = new Pool({ connectionString: process.env['DATABASE_URL']});
 
 const createFrame = async ({ captureId, uuid, s3Key }) => {
   const { rows } = await pool.query(
-    'SELECT currentPosition FROM cameras WHERE uuid = $1',
+    'SELECT "currentPosition" FROM cameras WHERE uuid = $1',
     [uuid]
   );
   await pool.query(
-    'INSERT INTO frames(captureId, positionId, s3Key) VALUES($1, $2, $3)',
+    'INSERT INTO frames("captureId", "positionId", "s3Key") VALUES($1, $2, $3)',
     [data.captureId, rows[0].currentPosition, data.s3Key]
   );
 };

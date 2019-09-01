@@ -22,8 +22,10 @@ setRoutes(app, commands, db);
 const handleWsResult = (data, uuid = null) => {
   if (!data.result) { console.log('Tried to handle an event that was not a result!', data); }
   if (data.result == 'capture:success') {
+    console.log(data);
     db.createFrame({
-      ...data,
+      captureId: data.captureId,
+      s3Key: data.s3Key,
       uuid
     }).catch((e) => console.error(e.stack));
   } else {
