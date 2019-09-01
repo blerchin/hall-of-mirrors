@@ -11,7 +11,6 @@ module.exports = (commands, db) => {
     const { id } = req.params;
     const layout = await db.getLayoutWithPositions(id);
     const captures = await db.getCaptures(id);
-    console.log(captures);
     res.render('layout', { captures, layout });
   });
 
@@ -22,12 +21,18 @@ module.exports = (commands, db) => {
     res.redirect(`/layout/${layoutId}`);
   });
 
+  router.get('/layout/:layoutId/capture/new', async (req, res) => {
+    const { layoutId } = req.params;
+    const capture = await db.getLatestCapture();
+    res.render('latestCapture', { capture, layoutId });
+  })
+
   router.post('/layout/:id/capture', async (req, res) => {
     const { id } = req.params;
     const captureId = await db.createCapture({ layoutId: id });
     const uuids = await db.getUUIDsByLayoutId(req.params.id);
     commands.send('capture:now', { captureId }, { targetIds: uuids });
-    res.redirect(`/layout/${id}`);
+    res.redirect(`/layout/${id}/capture/new`);
   });
 
   router.get('/layout/:id/capture/:id', async (req, res) => {

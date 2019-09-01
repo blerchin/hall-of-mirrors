@@ -64,6 +64,15 @@ const getCaptures = async (layoutId) => {
   return rows;
 };
 
+const getLatestCapture = async () => {
+  const { rows: captures } = await pool.query('SELECT * FROM captures ORDER BY "createdAt" DESC LIMIT 1');
+  const { rows: frames } = await pool.query('SELECT * FROM frames WHERE "captureId" = $1', [captures[0].id]);
+  return {
+    ...captures[0],
+    frames
+  };
+}
+
 const getCaptureWithFrames = async (captureId) => {
   const { rows: captures } = await pool.query('SELECT * FROM captures WHERE id = $1', [captureId]);
   const { rows: frames } = await pool.query('SELECT * FROM frames WHERE "captureId" = $1', [captureId]);
@@ -108,6 +117,7 @@ module.exports = {
   deleteCamera,
   getCameras,
   getCaptures,
+  getLatestCapture,
   getCaptureWithFrames,
   getLayouts,
   getLayoutWithPositions,
