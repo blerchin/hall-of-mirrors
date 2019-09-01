@@ -57,7 +57,8 @@ const createCapture = async ({ layoutId }) => {
 
 const getCaptures = async (layoutId) => {
   const { rows } = await pool.query(
-    'SELECT captures.id, captures."createdAt", frames."positionId", frames."s3Key", frames."createdAt" FROM captures INNER JOIN frames ON captures.id = frames."captureId" WHERE captures."layoutId" = $1',
+    'SELECT * FROM captures JOIN (SELECT DISTINCT ON ("captureId") * FROM frames ORDER BY "captureId", "createdAt" DESC) AS recent_frames '
+    + ' ON captures.id = recent_frames."captureId" WHERE captures."layoutId" = $1 ORDER BY captures."createdAt" DESC',
     [layoutId]
   );
   return rows;
