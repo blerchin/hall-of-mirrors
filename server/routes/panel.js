@@ -11,6 +11,7 @@ module.exports = (commands, db) => {
     const { id } = req.params;
     const layout = await db.getLayoutWithPositions(id);
     const captures = await db.getCaptures(id);
+    console.log(captures);
     res.render('layout', { captures, layout });
   });
 
