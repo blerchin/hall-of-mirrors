@@ -31,7 +31,7 @@ module.exports = (commands, db) => {
 
   router.get('/layout/:id/capture/:id', async (req, res) => {
     const { id } = req.params;
-    const capture = await db.getCaptureWithFrames();
+    const capture = await db.getCaptureWithFrames(id);
     res.render('capture', { capture });
   });
 

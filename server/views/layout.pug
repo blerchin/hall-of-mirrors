@@ -39,7 +39,8 @@ block content
 
 
   h3 Captures
+    br
     each capture in captures
-      a(href=`layout/${layout.id}/capture/${capture.id}`)
-        img(src="https://hall-of-mirrors.s3-us-west-1.amazonaws.com/" + capture.s3Key style="height: auto; width: 200")
+      a(href=`/layout/${layout.id}/capture/${capture.id}` style="display: block;")
+        img(src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${capture.s3Key}` style="height: auto; width: 200px")
         p= capture.createdAt

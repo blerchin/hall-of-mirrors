@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "migrate": "node-pg-migrate up",
     "seed": "node db/seed.js",
-    "setup": "createdb view-from-below && npm run migrate up && npm run seed",
+    "setup": "npm run migrate && npm run seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

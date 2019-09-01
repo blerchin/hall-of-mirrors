@@ -8,6 +8,9 @@ block content
   h4 Created #{capture.createdAt}
 
   h3 Captures
-    each frame in capture.frames
-      a(href=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${capture.s3Key}`)
-        img(src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/$capture.s3Key}` style="height: auto; width: 200")
+    table
+      tr
+        each frame in capture.frames
+          td
+            a(href=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${frame.s3Key}`)
+              img(src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${frame.s3Key}` style="height: auto; width: 100%")

@@ -1,0 +1,8 @@
+[{
+  "layoutId": 1,
+  "frames": [
+    { "positionId": 1, "s3Key": "IMG_1567302307109.jpg" },
+    { "positionId": 2, "s3Key": "IMG_1567302310443.jpg" },
+    { "positionId": 3, "s3Key": "IMG_1567302330421.jpg" }
+  ]
+}]

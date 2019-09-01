@@ -1,6 +1,7 @@
 const { pool } = require('./index');
 
 const layouts = require('./layouts.json');
+const captures = require('./captures.json');
 
 const seedLayouts = () => Promise.all(Object.keys(layouts).map(async (title) => {
   const client = await pool.connect();
@@ -33,7 +34,36 @@ const seedLayouts = () => Promise.all(Object.keys(layouts).map(async (title) => 
   }
 }));
 
+const seedCaptures = () => Promise.all(captures.map(async (capture) => {
+  const client = await pool.connect();
+  const { layoutId, frames } = capture;
+  try {
+    await client.query('BEGIN');
+    const { rows: captures } = await client.query(
+      'INSERT INTO captures("layoutId") VALUES($1) RETURNING id',
+      [layoutId]
+    );
+    const captureId = captures[0].id;
 
-seedLayouts().then(() => console.log('Seeding completed successfully'))
+    await Promise.all(frames.map(async (frame) => {
+      await client.query(
+        'INSERT INTO frames("layoutId", "positionId", "captureId", "s3Key") VALUES($1, $2, $3, $4)',
+        [layoutId, frame.positionId, captureId, frame.s3Key]
+      );
+    }))
+
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e
+  } finally {
+    client.release();
+  }
+}));
+
+
+seedLayouts()
+  .then(() => seedCaptures())
+  .then(() => console.log('Seeding completed successfully'))
   .catch((e) => console.error(e.stack))
   .finally(() => process.exit());
