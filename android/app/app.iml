@@ -89,8 +89,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 8 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: __local_aars__:/opt/view-from-below/android/app/libs/commons-net-ftp-2.0.jar:unspecified@jar" level="project" />
-    <orderEntry type="library" name="Gradle: __local_aars__:/opt/view-from-below/android/app/libs/jsch-0.1.48.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:/opt/hall-of-mirrors/android/app/libs/commons-net-ftp-2.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" name="Gradle: __local_aars__:/opt/hall-of-mirrors/android/app/libs/jsch-0.1.48.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4:18.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.11.0@jar" level="project" />

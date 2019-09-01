@@ -54,16 +54,13 @@ public class CameraManager {
         Log.d(TAG,"view Removed");
     }
 
-    final void previewWasSaved(URI pathToFile) {
-        cleanUp();
+    void uploadS3(UploadParams params) {
         UploadS3 s3 = new UploadS3();
-        AsyncTask<URI,Void,Long> upload = s3.execute(pathToFile);
-        while(upload.getStatus() == AsyncTask.Status.PENDING) {}
-        Log.d(TAG, "Took a picture!");
-        //scheduleNext();
+        AsyncTask<UploadParams,Void,String> upload = s3.execute(params);
+        Log.d(TAG, "Uploaded a picture!");
     }
 
-    public void capture(){
+    public void capture(final int captureId, final CaptureListener listener){
         Log.d(TAG,"checking camera hardware");
         if (checkCameraHardware(ctx) ){
             mCamera = getCameraInstance();
@@ -73,7 +70,8 @@ public class CameraManager {
             cp.setOnSavePicture(new CameraPreview.CameraPictureCallback() {
                 @Override
                 public void onPictureSaved(URI pathToFile) {
-                previewWasSaved(pathToFile);
+                    cleanUp();
+                    uploadS3(new UploadParams(pathToFile, captureId, listener));
                 }
             });
             // Gnarly hack thanks to http://stackoverflow.com/questions/2386025/android-camera-without-preview

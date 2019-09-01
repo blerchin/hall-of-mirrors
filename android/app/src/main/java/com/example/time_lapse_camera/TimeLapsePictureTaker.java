@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;;
-import android.app.AlarmManager;
 import android.widget.Toast;
 
 import okhttp3.OkHttpClient;
@@ -39,7 +38,6 @@ public class TimeLapsePictureTaker extends Service {
         }
     }
 
-
     @Override
     public void onCreate() {
         mIntentReceiver = new BroadcastReceiver() {
@@ -53,7 +51,6 @@ public class TimeLapsePictureTaker extends Service {
                 }
             }
         };
-
         ctx.registerReceiver(mIntentReceiver, new IntentFilter(INCOMING_STOP_ACTION));
     }
 
