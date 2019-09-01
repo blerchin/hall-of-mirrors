@@ -1,0 +1,13 @@
+extends _wrapper.pug
+
+block content
+  h3 Viewing Capture "#{capture.id}"
+  h4
+    a(href=`/layout/${capture.layoutId}`)
+      Back to Layout
+  h4 Created #{capture.createdAt}
+
+  h3 Captures
+    each frame in capture.frames
+      a(href=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${capture.s3Key}`)
+        img(src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/$capture.s3Key}` style="height: auto; width: 200")

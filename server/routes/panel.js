@@ -29,6 +29,12 @@ module.exports = (commands, db) => {
     res.redirect(`/layout/${id}`);
   });
 
+  router.get('/layout/:id/capture/:id', async (req, res) => {
+    const { id } = req.params;
+    const capture = await db.getCaptureWithFrames();
+    res.render('capture', { capture });
+  });
+
   router.get('/cameras', async (req, res) => {
     const cameras = await db.getCameras();
     res.render('cameras', { cameras });
