@@ -4,3 +4,6 @@ server/uploads
 android/app/build
 android/.gradle
 s3credentials.json
+.idea
+node_modules
+.env
