@@ -6,16 +6,24 @@ block content
   table
     thead
       tr
-        th= "id"
-        th= "uuid"
-        th= "currentLayout"
-        th= "delete"
+        th id
+        th uuid
+        th layout
+        th position
+        th update
+        th delete
     tbody
       each camera in cameras
         tr
           td= camera.id
           td= camera.uuid
-          td= camera.currentLayout
+          form(action="/camera/" + camera.id + "?_method=PUT" method="POST")
+            td
+                input(name="currentLayout" type="text" value=camera.currentLayout size=4)
+            td
+                input(name="currentPosition" type="text" value=camera.currentPosition size=4)
+            td
+                input(type="submit" value="Update")
           td
             form(action="/camera/" + camera.id + "?_method=DELETE" method="POST")
               input(type="submit" value="Delete")

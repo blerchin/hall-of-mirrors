@@ -52,6 +52,13 @@ module.exports = (commands, db) => {
     res.redirect('/cameras');
   });
 
+  router.put('/camera/:id', async (req, res) => {
+    const { id } = req.params;
+    const { currentLayout, currentPosition } = req.body;
+    await db.updateCamera(id, { currentLayout, currentPosition });
+    res.redirect('/cameras');
+  });
+
   router.delete('/camera/:id', async (req, res) => {
     const { id } = req.params;
     await db.deleteCamera(id);

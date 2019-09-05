@@ -40,6 +40,13 @@ const createCamera = async ({ uuid }) => {
   return rows[0].id
 }
 
+const updateCamera = async (id, { currentLayout, currentPosition }) => {
+  await pool.query(
+    'UPDATE cameras SET "currentLayout" = $1, "currentPosition" = $2 WHERE id = $3',
+    [currentLayout, currentPosition, id]
+  );
+}
+
 const deleteCamera = (id) => pool.query('DELETE FROM cameras WHERE id = $1', [id]);
 
 const getCameras = async () => {
@@ -115,6 +122,7 @@ module.exports = {
   createPosition,
   updatePosition,
   deleteCamera,
+  updateCamera,
   getCameras,
   getCaptures,
   getLatestCapture,
