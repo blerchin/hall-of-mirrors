@@ -71,8 +71,8 @@ const getCaptures = async (layoutId) => {
   return rows;
 };
 
-const getLatestCapture = async () => {
-  const { rows: captures } = await pool.query('SELECT * FROM captures ORDER BY "createdAt" DESC LIMIT 1');
+const getLatestCapture = async (layoutId) => {
+  const { rows: captures } = await pool.query('SELECT * FROM captures WHERE "layoutId" = $1 ORDER BY "createdAt" DESC LIMIT 1', [layoutId]);
   const { rows: frames } = await pool.query('SELECT * FROM frames WHERE "captureId" = $1', [captures[0].id]);
   return {
     ...captures[0],
@@ -88,6 +88,12 @@ const getCaptureWithFrames = async (captureId) => {
     frames
   };
 }
+
+const createLayout = async (title) => {
+  const { rows } = await pool.query('INSERT INTO layouts(title) VALUES($1) RETURNING id', [title])
+  return rows[0].id;
+}
+
 const getLayouts = async () => {
   const { rows } = await pool.query(
     'SELECT layouts.id, layouts.title, COUNT(cameras.id) AS count_cameras FROM layouts LEFT OUTER JOIN cameras ON layouts.id = "cameras"."currentLayout" GROUP BY layouts.id ORDER BY count_cameras DESC'
@@ -98,7 +104,7 @@ const getLayouts = async () => {
 const getLayoutWithPositions = async (id) => {
   const { rows: layoutRows } = await pool.query('SELECT * FROM layouts WHERE id = $1', [id]);
   const { rows: positionRows } = await pool.query(
-    'SELECT positions.id, positions.translation, positions.rotation, cameras.id AS camera_id, cameras.uuid AS camera_uuid FROM positions LEFT JOIN cameras ON positions.id = "cameras"."currentPosition" WHERE "layoutId" = $1',
+    'SELECT positions.id, positions.translation, positions.rotation, cameras.id AS camera_id, cameras.uuid AS camera_uuid FROM positions LEFT JOIN cameras ON positions.id = "cameras"."currentPosition" WHERE "layoutId" = $1 ORDER BY positions."createdAt" ASC',
     [id]
   );
   return {
@@ -119,6 +125,7 @@ module.exports = {
   createCamera,
   createCapture,
   createFrame,
+  createLayout,
   createPosition,
   updatePosition,
   deleteCamera,

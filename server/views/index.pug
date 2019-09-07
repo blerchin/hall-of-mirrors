@@ -19,12 +19,10 @@ block content
             a(href="/layout/" + layout.id)= layout.title
           td
             = layout.count_cameras
-
-  hr
-  br
-  form(id="ws-send-form")
-    input(type="text" placeholder="Send a command")
-    input(type="submit" value="Send")
+  h4 Create a Layout
+  form(action="layout" method="POST")
+    input(type="text" name="title" placeholder="Title")
+    input(type="submit" value="Create")
 
   h3= "Manual Capture"
   button(id="capture-button")= "Capture"

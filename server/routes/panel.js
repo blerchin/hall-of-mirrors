@@ -7,11 +7,24 @@ module.exports = (commands, db) => {
     res.render('index', { layouts });
   })
 
+  router.post('/layout', async (req, res) => {
+    const { title } = req.body;
+    const id = await db.createLayout(title);
+    res.redirect(`/layout/${id}`);
+  });
+
   router.get('/layout/:id', async (req, res) => {
     const { id } = req.params;
     const layout = await db.getLayoutWithPositions(id);
     const captures = await db.getCaptures(id);
     res.render('layout', { captures, layout });
+  });
+
+  router.post('/layout/:layoutId/position', async (req, res) => {
+    const { layoutId } = req.params;
+    const { translation, rotation } = req.body;
+    await db.createPosition({ layoutId, rotation, translation });
+    res.redirect(`/layout/${layoutId}`);
   });
 
   router.put('/layout/:layoutId/position/:positionId', async (req, res) => {
@@ -23,7 +36,7 @@ module.exports = (commands, db) => {
 
   router.get('/layout/:layoutId/capture/new', async (req, res) => {
     const { layoutId } = req.params;
-    const capture = await db.getLatestCapture();
+    const capture = await db.getLatestCapture(layoutId);
     res.render('latestCapture', { capture, layoutId });
   })
 
