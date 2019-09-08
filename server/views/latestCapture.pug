@@ -7,9 +7,9 @@ block content
     input(type="submit" value="Capture Now")
 
   br
+  if capture
+    h3 Viewing Capture "#{capture.id}"
+    h4 Created #{capture.createdAt}
 
-  h3 Viewing Capture "#{capture.id}"
-  h4 Created #{capture.createdAt}
-
-  h3 Captures
-  +frames(capture.frames)
+    h3 Captures
+    +frames(capture.frames)

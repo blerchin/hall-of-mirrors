@@ -73,6 +73,9 @@ const getCaptures = async (layoutId) => {
 
 const getLatestCapture = async (layoutId) => {
   const { rows: captures } = await pool.query('SELECT * FROM captures WHERE "layoutId" = $1 ORDER BY "createdAt" DESC LIMIT 1', [layoutId]);
+  if (!captures.length) {
+    return null;
+  }
   const { rows: frames } = await pool.query('SELECT * FROM frames WHERE "captureId" = $1', [captures[0].id]);
   return {
     ...captures[0],
