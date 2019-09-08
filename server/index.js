@@ -23,11 +23,9 @@ const handleWsResult = (data, uuid = null) => {
   if (!data.result) { console.log('Tried to handle an event that was not a result!', data); }
   if (data.result == 'capture:success') {
     console.log(data);
-    db.createFrame({
-      captureId: data.captureId,
-      s3Key: data.s3Key,
-      uuid
-    }).catch((e) => console.error(e.stack));
+    const { captureId, s3Key } = data;
+    db.createFrame({ captureId, s3Key, uuid}).catch((e) => console.error(e.stack));
+    commands.send("show:image", { s3Key }, { targetIds: [ uuid ] })
   } else {
     console.log("Don't know how to handle result " + data.result );
   }
