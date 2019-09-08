@@ -1,4 +1,4 @@
-package com.example.time_lapse_camera;
+package com.example.android_camera_client;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,7 +48,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     
     /** Create a File for saving an image or video */
     private File getOutputMediaFile(Date date) throws IOException {
-        File mediaStorageDir = new File(this.getContext().getFilesDir(), "TimeLapseCamera");
+        File mediaStorageDir = new File(this.getContext().getFilesDir(), "AndroidCameraClient");
 
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
@@ -63,7 +63,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
     
     private static String getTimeStamp(Date date){
-    	//return new SimpleDateFormat("yyyyMMdd_HHmmss").format( date );
     	return String.valueOf( new Date().getTime() );
     }
 

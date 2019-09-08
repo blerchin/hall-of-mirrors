@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 8
+    compileSdkVersion 11
     buildToolsVersion "29.0.1"
 
     defaultConfig {
         applicationId "com.example.time_lapse_camera"
-        minSdkVersion 8
+        minSdkVersion 11
         targetSdkVersion 15
     }
 

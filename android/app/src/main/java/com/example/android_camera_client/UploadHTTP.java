@@ -1,4 +1,4 @@
-package com.example.time_lapse_camera;
+package com.example.android_camera_client;
 
 import java.io.File;
 import java.io.FileInputStream;

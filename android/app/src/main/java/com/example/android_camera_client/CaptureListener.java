@@ -1,5 +1,7 @@
-package com.example.time_lapse_camera;
+package com.example.android_camera_client;
 
+import android.content.Context;
+import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -17,15 +19,30 @@ public class CaptureListener extends WebSocketListener {
     public String TAG = "CaptureListener";
     private int KEEP_ALIVE_INTERVAL = 1000;
     private CameraManager cm;
+    private ShowManager sm;
     private WebSocket ws;
     private boolean isOpen = false;
     private CaptureListener self = this;
 
-    Handler handler = new Handler(Looper.getMainLooper()) {
+    CaptureListener(CameraManager _cm, ShowManager _sm) {
+        super();
+        cm = _cm;
+        sm = _sm;
+    }
+
+    Handler captureHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
             Integer captureId = (Integer) message.obj;
             cm.capture(captureId, self);
+        }
+    };
+
+    Handler showHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            String s3Key = (String) message.obj;
+            sm.showImage(s3Key);
         }
     };
 
@@ -43,14 +60,8 @@ public class CaptureListener extends WebSocketListener {
 
     Handler wsKeepAlive = new Handler(Looper.getMainLooper()) {
         @Override
-        public void handleMessage(Message message) {
-
-        }
+        public void handleMessage(Message message) {}
     };
-
-    public void setCameraManager(CameraManager _cm) {
-        cm = _cm;
-    }
 
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -84,11 +95,15 @@ public class CaptureListener extends WebSocketListener {
             JSONObject json = new JSONObject(text);
             String command = json.getString("command");
             JSONObject data = json.getJSONObject("data");
-            int captureId = data.getInt("captureId");
 
             if (command.equals("capture:now")) {
                 Log.d(TAG, "capturing");
-                Message message = handler.obtainMessage(0, 0, 0, new Integer(captureId));
+                int captureId = data.getInt("captureId");
+                Message message = captureHandler.obtainMessage(0, 0, 0, new Integer(captureId));
+                message.sendToTarget();
+            } else if (command.equals("show:image")) {
+                String s3Key = data.getString("s3Key");
+                Message message = showHandler.obtainMessage(0, 0, 0, s3Key);
                 message.sendToTarget();
             }
         } catch (JSONException e) {

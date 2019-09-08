@@ -1,4 +1,4 @@
-package com.example.time_lapse_camera;
+package com.example.android_camera_client;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -17,8 +17,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 
-public class TimeLapsePictureTaker extends Service {
-    private static String TAG = "TimeLapsePictureTaker";
+public class AndroidCameraClient extends Service {
+    private static String TAG = "AndroidCameraClient";
 
     PowerManager.WakeLock wakeLock;
 
@@ -29,12 +29,13 @@ public class TimeLapsePictureTaker extends Service {
 
     private BroadcastReceiver mIntentReceiver;
     private CameraManager cm;
+    private ShowManager sm;
 
     private OkHttpClient client;
 
     public class LocalBinder extends Binder {
-        TimeLapsePictureTaker getService() {
-            return TimeLapsePictureTaker.this;
+        AndroidCameraClient getService() {
+            return AndroidCameraClient.this;
         }
     }
 
@@ -63,7 +64,7 @@ public class TimeLapsePictureTaker extends Service {
             "time_lapse_camera::AlarmReceiverWakeLock");
         wakeLock.acquire();
 
-        Log.i("TimeLapsePictureTaker", "Received start id " + startId + ": " + intent);
+        Log.i("AndroidCameraClient", "Received start id " + startId + ": " + intent);
         String intentAction = null;
         try{
             intentAction = intent.getAction();
@@ -72,6 +73,7 @@ public class TimeLapsePictureTaker extends Service {
         Log.i(TAG, "intent is:" + intentAction );
         //initializeCameraPreview();
         cm = new CameraManager(ctx);
+        sm = new ShowManager(ctx);
         listenWebsockets();
 
         // We want this service to continue running until it is explicitly
@@ -85,8 +87,7 @@ public class TimeLapsePictureTaker extends Service {
         tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String uuid = tm.getDeviceId();
         Request request = new Request.Builder().url("ws://hall-of-mirrors.herokuapp.com/ws/" + uuid).build();
-        CaptureListener listener = new CaptureListener();
-        listener.setCameraManager(cm);
+        CaptureListener listener = new CaptureListener(cm, sm);
         WebSocket ws = client.newWebSocket(request, listener);
         client.dispatcher().executorService().shutdown();
     }

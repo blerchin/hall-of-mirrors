@@ -1,4 +1,4 @@
-package com.example.time_lapse_camera;
+package com.example.android_camera_client;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
