@@ -1,5 +1,6 @@
 package com.example.android_camera_client;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -19,14 +20,31 @@ public class CaptureListener extends WebSocketListener {
     private CameraManager cm;
     private ShowManager sm;
     private WebSocket ws;
+    private AndroidCameraClient client;
     private boolean isOpen = false;
     private CaptureListener self = this;
 
-    CaptureListener(CameraManager _cm, ShowManager _sm) {
+    CaptureListener(AndroidCameraClient _client, CameraManager _cm, ShowManager _sm) {
         super();
         cm = _cm;
         sm = _sm;
+        client = _client;
     }
+
+    Handler openHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            client.onWebsocketOpen();
+        }
+    };
+
+    Handler closeHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            String reason = (String) message.obj;
+            client.onWebsocketClose(reason);
+        }
+    };
 
     Handler captureHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -66,6 +84,8 @@ public class CaptureListener extends WebSocketListener {
         ws = webSocket;
         isOpen = true;
         keepAlive();
+        Message message = openHandler.obtainMessage();
+        message.sendToTarget();
     }
 
     public void keepAlive() {
@@ -116,11 +136,16 @@ public class CaptureListener extends WebSocketListener {
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
         Log.d(TAG, reason);
+        Message message = closeHandler.obtainMessage(0, 0, 0, reason);
+        message.sendToTarget();
         isOpen = false;
     }
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+        Log.d(TAG, "Websocket Failure");
+        Message message = closeHandler.obtainMessage(0, 0, 0, t.getMessage());
+        message.sendToTarget();
         isOpen = false;
         t.printStackTrace();
     }

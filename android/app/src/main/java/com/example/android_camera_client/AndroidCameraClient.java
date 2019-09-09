@@ -7,15 +7,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.os.Binder;;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.ProtocolException;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
+
 
 public class AndroidCameraClient extends Service {
     private static String TAG = "AndroidCameraClient";
@@ -27,12 +32,17 @@ public class AndroidCameraClient extends Service {
     private String INCOMING_START_ACTION = "com.mhzmaster.tlpt.START";
     private String INCOMING_STOP_ACTION = "com.mhzmaster.tlpt.STOP";
 
+    private final int WS_MAX_RETRIES = 10;
+    private int wsRetries = 0;
+    private final Handler retryHandler = new Handler();
+
     private BroadcastReceiver mIntentReceiver;
     private CameraManager cm;
     private ShowManager sm;
 
     private OkHttpClient client;
     private FileCredentials credentials;
+    private CaptureListener listener;
 
     public class LocalBinder extends Binder {
         AndroidCameraClient getService() {
@@ -82,7 +92,30 @@ public class AndroidCameraClient extends Service {
         return START_STICKY;
     }
 
+    public void onWebsocketOpen() {
+        wsRetries = 0;
+        Toast.makeText(ctx, "Websocket opened! ", Toast.LENGTH_LONG).show();
+
+    }
+
+    public void onWebsocketClose(String reason) {
+      Toast.makeText(ctx, "Websocket closed. " + reason, Toast.LENGTH_LONG).show();
+      if (wsRetries < WS_MAX_RETRIES) {
+          wsRetries++;
+          retryHandler.postDelayed(new Runnable() {
+              @Override
+              public void run() {
+                  Log.d(TAG, "retrying...");
+                  listenWebsockets();
+              }
+          }, 10000);
+      }
+    }
+
     public void listenWebsockets() {
+        if (listener == null) {
+            listener = new CaptureListener(this, cm, sm);
+        }
         credentials = new FileCredentials();
         credentials.getCredentials();
         client = new OkHttpClient();
@@ -92,8 +125,7 @@ public class AndroidCameraClient extends Service {
         String wsUrl = credentials.wsURL + "/" + uuid;
         Log.i(TAG, "wsUrl: " + wsUrl);
         Request request = new Request.Builder().url(wsUrl).build();
-        CaptureListener listener = new CaptureListener(cm, sm);
-        WebSocket ws = client.newWebSocket(request, listener);
+        client.newWebSocket(request, listener);
         client.dispatcher().executorService().shutdown();
     }
 

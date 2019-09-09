@@ -30,7 +30,6 @@ public class TakePicture extends Activity{
     public void startCapture() {
     	Intent startCapture = new Intent(CAPTURE_INTENT_START);
     	context.startService( startCapture );
-    	
     }
     public void stopCapture( View view ) {
         stopCapture();
