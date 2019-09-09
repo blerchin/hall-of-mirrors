@@ -21,6 +21,7 @@ public class TakePicture extends Activity{
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.activity_take_picture);
+        startCapture();
     }
     public void startCapture( View view ) {
     	startCapture();

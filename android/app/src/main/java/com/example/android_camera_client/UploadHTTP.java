@@ -1,5 +1,6 @@
 package com.example.android_camera_client;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.BufferedReader;
@@ -7,92 +8,75 @@ import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.HttpRetryException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.HttpURLConnection;
+import java.util.UUID;
+
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class UploadHTTP extends AsyncTask<URI, Void, Long> {
-    private HttpURLConnection connection;
-    private String TAG = "BatchToHTTP";
+import com.amazonaws.util.IOUtils;
+
+public class UploadHTTP extends AsyncTask<UploadParams, Void, String> {
+    private String TAG = "UploadHTTP";
+    private FileCredentials credentials;
+    private UploadParams params;
+
+    UploadHTTP(FileCredentials _credentials) {
+        super();
+        credentials = _credentials;
+    }
 
     @Override
-    protected Long doInBackground(URI... pathToFile) {
-
+    protected String doInBackground(UploadParams... _params) {
         try{
-            URL dest = new URL("http://8cc5924d.ngrok.io/upload");
+            params = _params[0];
+            HttpURLConnection connection;
+            URL dest = new URL(credentials.uploadURL);
+            String boundary = "---------------"+ UUID.randomUUID().toString();
             connection = (HttpURLConnection) dest.openConnection();
             connection.setRequestMethod("POST");
-        } catch(Exception e){
-            Log.d(TAG, e.getMessage());
-        }
+            connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            MultipartEntityBuilder multipart = MultipartEntityBuilder.create();
+            multipart.setBoundary(boundary);
+            multipart.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
-        connection.setDoOutput(true);
-        connection.setDoInput(true);
-
-        connection.setConnectTimeout(120000);
-        connection.setReadTimeout(120000);
-        connection.setRequestProperty("Connection", "Keep-Alive");
-        connection.setRequestProperty("Cache-Control", "no-cache");
-        connection.setRequestProperty("Content-Type", "image/jpeg");
-
-        Log.i(TAG, "HTTP client initialized");
-
-        try{
             OutputStream request = connection.getOutputStream();
-            File imageFile = new File(pathToFile[0]);
+            File imageFile = new File(params.pathToFile);
             InputStream in = new FileInputStream(imageFile);
-            copy(in, request);
-            in.close();
+            multipart.addBinaryBody("file", in, ContentType.DEFAULT_BINARY, imageFile.getName());
+            multipart.build().writeTo(request);
 
             request.flush();
             request.close();
 
+            String result = null;
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                Log.d(TAG, readStream(connection.getInputStream()));
+                InputStream response = connection.getInputStream();
+                result = IOUtils.toString(response);
+                Log.d(TAG, "Key: " + result);
             }
             connection.disconnect();
 
-        } catch (Exception e) {
-            Log.w(TAG, e.getMessage());
-            return Long.valueOf(0);
-        }
-
-        return Long.valueOf(1);
-    }
-
-    private static void copy(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        while (true) {
-            int bytesRead = in.read(buffer);
-            if (bytesRead == -1) { break; }
-            out.write(buffer, 0, bytesRead);
-        }
-    }
-
-    private static String readStream(InputStream in) {
-        BufferedReader reader = null;
-        StringBuilder builder = new StringBuilder();
-        try {
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
+            return result;
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            Log.w(TAG, e.getMessage());
+            return null;
         }
-        return builder.toString();
+    }
+
+    @Override
+    protected void onPostExecute(String key) {
+        if (key != null) {
+            params.listener.sendSuccess(params.captureId, key);
+        }
     }
 
 }

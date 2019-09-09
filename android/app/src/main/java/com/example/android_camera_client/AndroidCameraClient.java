@@ -32,6 +32,7 @@ public class AndroidCameraClient extends Service {
     private ShowManager sm;
 
     private OkHttpClient client;
+    private FileCredentials credentials;
 
     public class LocalBinder extends Binder {
         AndroidCameraClient getService() {
@@ -82,11 +83,15 @@ public class AndroidCameraClient extends Service {
     }
 
     public void listenWebsockets() {
+        credentials = new FileCredentials();
+        credentials.getCredentials();
         client = new OkHttpClient();
         TelephonyManager tm;
         tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         String uuid = tm.getDeviceId();
-        Request request = new Request.Builder().url("ws://hall-of-mirrors.herokuapp.com/ws/" + uuid).build();
+        String wsUrl = credentials.wsURL + "/" + uuid;
+        Log.i(TAG, "wsUrl: " + wsUrl);
+        Request request = new Request.Builder().url(wsUrl).build();
         CaptureListener listener = new CaptureListener(cm, sm);
         WebSocket ws = client.newWebSocket(request, listener);
         client.dispatcher().executorService().shutdown();

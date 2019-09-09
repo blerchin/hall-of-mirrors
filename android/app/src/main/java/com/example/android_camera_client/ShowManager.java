@@ -2,9 +2,8 @@ package com.example.android_camera_client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
+
 import java.io.File;
 import java.util.Date;
 
@@ -16,7 +15,7 @@ public class ShowManager {
   }
 
   public void showImage(String s3Key) {
-    DownloadS3 download = new DownloadS3(this);
+    Downloader download = new Downloader(this);
     download.execute(s3Key);
   }
 

@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.File;
-import java.net.URI;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -13,27 +12,16 @@ import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectResult;
 
-class UploadParams {
-    UploadParams(URI path, int id, CaptureListener cl) {
-        pathToFile = path;
-        captureId = id;
-        listener = cl;
-    }
-    public URI pathToFile;
-    public int captureId;
-    public final CaptureListener listener;
-}
-
 public class UploadS3 extends AsyncTask<UploadParams, Void, String> {
 
     public String TAG = "UploadS3";
 
-    S3Credentials credentials;
+    FileCredentials credentials;
     UploadParams params;
 
-    public UploadS3() {
-        credentials = new S3Credentials();
-        credentials.getCredentials();
+    public UploadS3(FileCredentials _credentials) {
+        super();
+        credentials = _credentials;
     }
 
     @Override

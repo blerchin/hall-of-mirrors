@@ -22,11 +22,18 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
     compile 'com.android.support:support-v4:18.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile ('org.apache.httpcomponents:httpmime:4.3.6') {
+        exclude module: 'httpclient'
+    }
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5'
     compile files('libs/commons-net-ftp-2.0.jar')
     compile files('libs/jsch-0.1.48.jar')
     implementation 'com.amazonaws:aws-android-sdk-s3:2.7.+'

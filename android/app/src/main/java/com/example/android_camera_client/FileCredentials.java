@@ -15,8 +15,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class S3Credentials {
-  public String TAG = "com.example.time_lapse_camera.S3Credentials";
+public class FileCredentials {
+  public String TAG = "com.example.time_lapse_camera.FileCredentials";
+  public String downloadURL;
+  public String uploadURL;
+  public String wsURL;
+  public String method;
   public String bucketName;
   public String region;
   public AWSCredentials awsCredentials;
@@ -24,7 +28,7 @@ public class S3Credentials {
   public void getCredentials() {
     try {
       File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-      File credFile = new File(dir, "s3credentials.json");
+      File credFile = new File(dir, "fileCredentials.json");
       if (!credFile.exists()) {
         (new FileOutputStream(credFile)).write("put credentials here!".getBytes());
         throw new IOException("Credentials file not found.");
@@ -34,12 +38,21 @@ public class S3Credentials {
       is.read(data);
       String json = new String(data, "UTF-8");
       JSONObject creds = (JSONObject) new JSONTokener(json).nextValue();
-      bucketName = creds.getString("AWS_S3_BUCKET");
-      region = creds.getString("AWS_S3_REGION");
-      awsCredentials = new BasicAWSCredentials(
-          creds.getString("AWS_S3_KEY"),
-          creds.getString("AWS_S3_SECRET")
-      );
+      wsURL = creds.getString("WS_URL");
+      method = creds.getString("METHOD");
+      if (method.equals("s3")) {
+        bucketName = creds.getString("AWS_S3_BUCKET");
+        region = creds.getString("AWS_S3_REGION");
+        awsCredentials = new BasicAWSCredentials(
+            creds.getString("AWS_S3_KEY"),
+            creds.getString("AWS_S3_SECRET")
+        );
+      } else if (method.equals("http")) {
+        downloadURL = creds.getString("DOWNLOAD_URL");
+        uploadURL = creds.getString("UPLOAD_URL");
+      } else {
+        throw new IOException("method " + method + " not supported.");
+      }
     } catch (JSONException e) {
       Log.d(TAG, e.getMessage());
     } catch (IOException e) {

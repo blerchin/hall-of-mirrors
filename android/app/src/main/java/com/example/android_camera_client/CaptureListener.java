@@ -1,7 +1,5 @@
 package com.example.android_camera_client;
 
-import android.content.Context;
-import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;

@@ -54,12 +54,6 @@ public class CameraManager {
         Log.d(TAG,"view Removed");
     }
 
-    void uploadS3(UploadParams params) {
-        UploadS3 s3 = new UploadS3();
-        AsyncTask<UploadParams,Void,String> upload = s3.execute(params);
-        Log.d(TAG, "Uploaded a picture!");
-    }
-
     public void capture(final int captureId, final CaptureListener listener){
         Log.d(TAG,"checking camera hardware");
         if (checkCameraHardware(ctx) ){
@@ -71,7 +65,7 @@ public class CameraManager {
                 @Override
                 public void onPictureSaved(URI pathToFile) {
                     cleanUp();
-                    uploadS3(new UploadParams(pathToFile, captureId, listener));
+                    Uploader.start(new UploadParams(pathToFile, captureId, listener));
                 }
             });
             // Gnarly hack thanks to http://stackoverflow.com/questions/2386025/android-camera-without-preview
