@@ -3,5 +3,5 @@ mixin frames(frames)
       tr
         each frame in frames
           td
-            a(href=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${frame.s3Key}`)
-              img(src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${frame.s3Key}` style="height: auto; width: 100%")
+            a(href=`/files/${frame.s3Key}`)
+              img(src=`/files/${frame.s3Key}` style="height: auto; width: 100%")

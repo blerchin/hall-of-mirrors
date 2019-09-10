@@ -6,7 +6,6 @@ block content
 
 
   h3 Positions
-
   table
     thead
       th name
@@ -61,7 +60,7 @@ block content
       div(style="float: left; width: 25%;")
         a(href=`/layout/${layout.id}/capture/${capture.id}` style="display: block;")
           img(
-            src=`https://hall-of-mirrors.s3-us-west-1.amazonaws.com/${capture.s3Key}`
+            src=`/files/${capture.s3Key}`
             style="height: auto; width: 100%"
             title=capture.createdAt
           )
