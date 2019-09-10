@@ -72,7 +72,7 @@ const getCaptures = async (layoutId) => {
 };
 
 const getLatestCapture = async (layoutId) => {
-  const { rows: captures } = await pool.query('SELECT * FROM captures WHERE "layoutId" = $1 ORDER BY "createdAt" DESC LIMIT 1', [layoutId]);
+  const { rows: captures } = await pool.query('SELECT * FROM captures WHERE "layoutId" = $1 ORDER BY id DESC LIMIT 1', [layoutId]);
   if (!captures.length) {
     return null;
   }
@@ -85,7 +85,7 @@ const getLatestCapture = async (layoutId) => {
 
 const getCaptureWithFrames = async (captureId) => {
   const { rows: captures } = await pool.query('SELECT * FROM captures WHERE id = $1', [captureId]);
-  const { rows: frames } = await pool.query('SELECT * FROM frames WHERE "captureId" = $1', [captureId]);
+  const { rows: frames } = await pool.query('SELECT frames.id, "positionId", "s3Key", cameras.uuid AS uuid FROM frames INNER JOIN positions ON "positionId" = positions.id INNER JOIN cameras ON positions.id = cameras."currentPosition" WHERE "captureId" = $1', [captureId]);
   return {
     ...captures[0],
     frames

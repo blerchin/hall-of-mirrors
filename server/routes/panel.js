@@ -48,10 +48,17 @@ module.exports = (commands, db) => {
     res.redirect(`/layout/${id}/capture/new`);
   });
 
-  router.get('/layout/:id/capture/:id', async (req, res) => {
+  router.get('/layout/:layoutId/capture/:id', async (req, res) => {
     const { id } = req.params;
     const capture = await db.getCaptureWithFrames(id);
     res.render('capture', { capture });
+  });
+
+  router.post('/layout/:layoutId/capture/:id/show', async (req, res) => {
+    const { layoutId, id } = req.params;
+    const { frames } = await db.getCaptureWithFrames(id);
+    frames.forEach(({ s3Key, uuid }) => commands.send("show:image", { s3Key }, { targetIds: [ uuid ] }));
+    res.redirect(`/layout/${layoutId}/capture/${id}`);
   });
 
   router.get('/cameras', async (req, res) => {

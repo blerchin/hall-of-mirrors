@@ -2,11 +2,12 @@ extends _wrapper.pug
 include _mixins/frames.pug
 
 block content
-  h3 Viewing Capture "#{capture.id}"
   h4
-    a(href=`/layout/${capture.layoutId}`)
-      Back to Layout
+    a(href=`/layout/${capture.layoutId}`) Back to Layout
+  h3 Viewing Capture "#{capture.id}"
   h4 Created #{capture.createdAt}
+  form(action=`/layout/${capture.layoutId}/capture/${capture.id}/show` method='POST')
+    input(type='submit' value='Show')
 
   h3 Captures
   +frames(capture.frames)
