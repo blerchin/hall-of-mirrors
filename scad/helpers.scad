@@ -31,10 +31,26 @@ function is_safe_point(point, translation) =
 function is_safe(rotation, translation) =
   min([for(point = CASE_ANCHOR_POINTS) is_safe_point(rotate_point(rotation, point), translation) ? 1 : 0]) == 1;
 
-module scale_for_svg() {
-  MM_PER_IN = 25.4;
-  DPI = 96;
-  scale(DPI / MM_PER_IN) {
-    children();
-  }
+function get_safe_translation_and_rotation(index, size) = DRAW_RANDOM ?
+  (let (position = [rands(0, 360, 3), rands(0, size, 3)])
+   is_safe(position[0], position[1]) ? position : get_safe_translation_and_rotation(index, size)
+  ) : [ POSITIONS[index][0], POSITIONS[index][1] ];
+
+module label(position_i, support_i, point, zpos) {
+  pos_name = str(position_i);
+  support_name = chr(support_i + 65);
+  support_length = support_len(point, zpos);
+  color("white")
+  translate([ point[0], point[1], 0])
+    union() {
+      circle(2);
+      translate([5, 0, 0])
+      text(pos_name, size = 5);
+      translate([10, 0, 0])
+        text(support_name, size=3);
+      translate([5, -4, 0])
+        text(str(support_length), size=3);
+    }
+  sep = "\t";
+  echo(str(pos_name, support_name, sep, support_length, sep, point));
 }

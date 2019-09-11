@@ -16,12 +16,16 @@ module phone() {
     square([PHONE_WIDTH, PHONE_HEIGHT]);
 }
 
-module phone_camera() {
+module position_camera() {
   translate([
     PHONE_WIDTH - PHONE_LENS_OFFSET_LEFT - PHONE_LENS_DIA/2,
     PHONE_HEIGHT + CASE_THICKNESS - PHONE_LENS_OFFSET_TOP - PHONE_LENS_DIA / 2,
     -d
     ])
+    children();
+}
+
+module phone_camera() {
     cylinder(d=PHONE_LENS_DIA, h=CASE_THICKNESS + d2);
 }
 
@@ -79,7 +83,9 @@ module case_bool() {
     position_phone_in_case();
     phone_screen();
     phone_exit();
-    phone_camera();
+    position_camera() {
+      phone_camera();
+    };
     position_cleats();
     power_button_access();
   }
