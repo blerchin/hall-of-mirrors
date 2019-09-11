@@ -2,6 +2,7 @@ mixin frames(frames)
     table
       tr
         each frame in frames
-          td
+          td(style="position: relative")
             a(href=`/files/${frame.s3Key}`)
               img(src=`/files/${frame.s3Key}` style="height: auto; width: 100%")
+            span(style="color: white; text-shadow: 0px 0px 4px black; position: absolute; bottom: 10px; left: 10px;") #{frame.positionId}

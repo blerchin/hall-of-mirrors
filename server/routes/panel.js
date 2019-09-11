@@ -14,12 +14,16 @@ module.exports = (commands, db) => {
     res.redirect(`/layout/${id}`);
   });
 
-  router.get('/layout/:id', async (req, res) => {
-    const { id } = req.params;
+  router.get('/layout/:id', (req, res) => {
+    res.redirect(`/layout/${req.params.id}/page/1`);
+  });
+
+  router.get('/layout/:id/page/:pageNum', async (req, res) => {
+    const { id, pageNum } = req.params;
     const layout = await db.getLayoutWithPositions(id);
-    const frames = await db.getFrames(id);
+    const frames = await db.getFrames(id, pageNum);
     captures = groupBy(frames, 'captureId')
-    res.render('layout', { captures, layout });
+    res.render('layout', { captures, layout, pageNum });
   });
 
   router.post('/layout/:layoutId/position', async (req, res) => {

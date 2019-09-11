@@ -1,0 +1,9 @@
+mixin pagination(pageNum, urlForPage)
+  table(style="width: 100%")
+    tbody
+      tr
+        td
+          a(href=urlForPage(parseInt(pageNum) - 1)) &laquo; Newer
+        td
+          a(href=urlForPage(parseInt(pageNum) + 1) style="float: right") Older &raquo; 
+ 

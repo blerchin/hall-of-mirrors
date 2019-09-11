@@ -62,10 +62,13 @@ const createCapture = async ({ layoutId }) => {
   return rows[0].id;
 };
 
-const getFrames = async (layoutId) => {
+const getFrames = async (layoutId, page = 1, pageSize = 20) => {
   const { rows } = await pool.query(
-    'SELECT * FROM frames WHERE "layoutId" = $1 ORDER BY "captureId" DESC, "positionId" ASC' ,	
-    [layoutId]
+    `SELECT * FROM frames WHERE "captureId" IN (
+       SELECT id FROM captures WHERE "layoutId" = $1 ORDER BY id DESC
+       OFFSET $2 LIMIT $3
+     ) ORDER BY "captureId" DESC, "positionId" ASC`,
+    [layoutId, (page - 1) * pageSize, pageSize]
   );
   return rows;
 };
