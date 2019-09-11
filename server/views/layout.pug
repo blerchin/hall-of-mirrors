@@ -1,5 +1,6 @@
 extends _wrapper.pug
 include _mixins/vector_field.pug
+include _mixins/frames.pug
 
 block content
   h3 Managing Layout "#{layout.title}"
@@ -56,12 +57,11 @@ block content
   a(href=`/layout/${layout.id}/capture/new`) Start a Capture
     br
     br
-    each capture in captures
-      div(style="float: left; width: 25%;")
-        a(href=`/layout/${layout.id}/capture/${capture.id}` style="display: block;")
-          img(
-            src=`/files/${capture.s3Key}`
-            style="height: auto; width: 100%"
-            title=capture.createdAt
-          )
+    each captureId in Object.keys(captures).sort((a, b) => b - a)
+      div
+        a(href=`/layout/${layout.id}/capture/${captureId}` style="display: block;")
+          Capture #{captureId}
+          +frames(captures[captureId])
+          hr
+          br
 

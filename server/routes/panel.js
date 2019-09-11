@@ -1,4 +1,5 @@
 const Router = require('express-promise-router');
+const { groupBy } = require('../utils');
 const router = new Router();
 
 module.exports = (commands, db) => {
@@ -16,7 +17,8 @@ module.exports = (commands, db) => {
   router.get('/layout/:id', async (req, res) => {
     const { id } = req.params;
     const layout = await db.getLayoutWithPositions(id);
-    const captures = await db.getCaptures(id);
+    const frames = await db.getFrames(id);
+    captures = groupBy(frames, 'captureId')
     res.render('layout', { captures, layout });
   });
 
