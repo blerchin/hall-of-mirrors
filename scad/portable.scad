@@ -29,16 +29,14 @@ module draw_holder(foot=40) {
     cube([w, h + foot, d]);
 }
 
-module slot(id, extra = 10) {
+module slot(id) {
   if (id) {
     color("black")
-    translate([CASE_WIDTH/2, CASE_HEIGHT-10, CASE_DEPTH + d])
+    translate([PHONE_WIDTH/2 - 5, PHONE_HEIGHT-15, PHONE_DEPTH + d])
     linear_extrude(1)
       text(str(id));
   }
-  linear_extrude(CASE_DEPTH + wiggle)
-  rounding(8)
-    square([CASE_WIDTH + wiggle, CASE_HEIGHT + wiggle + extra]);
+  phone();
 
 }
 module field_of_view(length=70) {
@@ -72,4 +70,4 @@ difference() {
   holders();
   phones();
 }
-phones(with_fov=true);
+//phones(with_fov=true);
