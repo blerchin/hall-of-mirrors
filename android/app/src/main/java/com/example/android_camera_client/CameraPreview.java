@@ -145,7 +145,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		Camera.Size size = getPictureSize(params);
 		params.setPictureSize(size.width, size.height);
 		params.setJpegQuality(50);
-		params.setSceneMode(Camera.Parameters.SCENE_MODE_NIGHT);
+		params.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
 		Location location = getLastKnownLocation();
 		if (location != null) {
 			params.setGpsLatitude(location.getLatitude());

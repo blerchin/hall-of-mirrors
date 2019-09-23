@@ -71,7 +71,7 @@ public class AndroidCameraClient extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         PowerManager powerManager = (PowerManager) ctx.getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK,
+            PowerManager.SCREEN_BRIGHT_WAKE_LOCK,
             "time_lapse_camera::AlarmReceiverWakeLock");
         wakeLock.acquire();
 

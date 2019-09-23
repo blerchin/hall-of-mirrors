@@ -3,9 +3,13 @@ package com.example.android_camera_client;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.PowerManager;
+import android.util.Log;
 
 import java.io.File;
 import java.util.Date;
+
+import static android.content.Context.POWER_SERVICE;
 
 public class ShowManager {
   public final String TAG = "ShowManager";

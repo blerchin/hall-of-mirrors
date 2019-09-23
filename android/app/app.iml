@@ -87,7 +87,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 11 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 12 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: __local_aars__:/opt/hall-of-mirrors/android/app/libs/commons-net-ftp-2.0.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/opt/hall-of-mirrors/android/app/libs/jsch-0.1.48.jar:unspecified@jar" level="project" />

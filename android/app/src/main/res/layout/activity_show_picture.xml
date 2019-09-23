@@ -7,7 +7,7 @@
     android:keepScreenOn="true"
     android:orientation="horizontal">
 
-    <ImageView
+    <com.example.android_camera_client.AlwaysOnImageView
         android:id="@+id/showPicture.imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

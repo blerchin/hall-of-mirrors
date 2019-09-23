@@ -27,7 +27,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowPicture" android:label="ShowPicture" android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".ShowPicture"
+            android:label="ShowPicture"
+            android:screenOrientation="landscape">
+        </activity>
         <service android:name=".AndroidCameraClient"
             	 android:process=":remote"
             	 android:permission="android.permission.CAMERA">

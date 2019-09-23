@@ -1,6 +1,5 @@
 package com.example.android_camera_client;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -61,6 +60,7 @@ public class CaptureListener extends WebSocketListener {
             sm.showImage(s3Key);
         }
     };
+
 
     public void sendSuccess(int captureId, String s3Key) {
         try {
