@@ -6,12 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import android.os.Binder;;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
-import android.util.Log;;
+import android.util.Log;
 import android.widget.Toast;
 
 import okhttp3.OkHttpClient;
@@ -96,16 +96,19 @@ public class AndroidCameraClient extends Service {
 
     public void onWebsocketClose(String reason) {
       Toast.makeText(ctx, "Websocket closed. " + reason, Toast.LENGTH_LONG).show();
-      if (wsRetries < WS_MAX_RETRIES) {
-          wsRetries++;
-          retryHandler.postDelayed(new Runnable() {
-              @Override
-              public void run() {
-                  Log.d(TAG, "retrying...");
-                  listenWebsockets();
-              }
-          }, 10000);
+      wsRetries++;
+      int delay = 1000;
+      if (wsRetries > WS_MAX_RETRIES) {
+        //keep trying forever but not so frequently
+        delay = 1000 * 60;
       }
+      retryHandler.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+              Log.d(TAG, "retrying...");
+              listenWebsockets();
+          }
+      }, delay);
     }
 
     public void listenWebsockets() {
