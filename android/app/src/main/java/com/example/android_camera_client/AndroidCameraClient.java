@@ -14,12 +14,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.net.ProtocolException;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.WebSocket;
 
 
 public class AndroidCameraClient extends Service {
