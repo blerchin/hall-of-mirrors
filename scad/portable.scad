@@ -66,8 +66,8 @@ module holders() {
     }
   }
 }
-difference() {
+*difference() {
   holders();
   phones();
 }
-//phones(with_fov=true);
+phones(with_fov=true);

@@ -15,8 +15,8 @@ module support(point, zpos) {
 }
 
 module draw_supports(rotation, zpos, index, label_only = false) {
-  for (p = [0 : len(CASE_ANCHOR_POINTS) - 1]) {
-    point = CASE_ANCHOR_POINTS[p];
+  for (p = [0 : len(PANE_ANCHOR_POINTS) - 1]) {
+    point = PANE_ANCHOR_POINTS[p];
     position = rotate_point(rotation, point);
     if (label_only) {
       label(index, p, position, zpos);
@@ -33,16 +33,11 @@ module draw_plan(index, rotation, translation) {
 
 module draw(index, rotation, translation) {
   translate(translation)
-  difference() {
-    union() {
-      draw_supports(rotation, translation[2], index);
-      echo(str("#", index, "\t ", rotation, "\t ", translation));
-      rotate(rotation)
-        case_bool();
-    }
-    rotate(rotation) {
-      position_phone_in_case();
-    }
+  union() {
+    draw_supports(rotation, translation[2], index);
+    echo(str("#", index, "\t ", rotation, "\t ", translation));
+    rotate(rotation)
+      cube([PANE_WIDTH, PANE_HEIGHT, PANE_THICKNESS]);
   }
 }
 
