@@ -4,7 +4,7 @@ include _mixins/frames.pug
 block content
 
   form(action=`/layout/${layoutId}/capture` method="POST")
-    input(type="submit" value="Capture Now")
+    input(type="submit" value="Capture Now" style="padding: 20px")
 
   br
   if capture

@@ -62,11 +62,13 @@ const createCapture = async ({ layoutId }) => {
   return rows[0].id;
 };
 
-const getCaptures = async (layoutId) => {
+const getFrames = async (layoutId, page = 1, pageSize = 20) => {
   const { rows } = await pool.query(
-    'SELECT captures.id, captures."createdAt", captures."layoutId", recent_frames."s3Key" FROM captures JOIN (SELECT DISTINCT ON ("captureId") * FROM frames ORDER BY "captureId", "createdAt" DESC) AS recent_frames '
-    + ' ON captures.id = recent_frames."captureId" WHERE captures."layoutId" = $1 ORDER BY captures."createdAt" DESC',
-    [layoutId]
+    `SELECT * FROM frames WHERE "captureId" IN (
+       SELECT id FROM captures WHERE "layoutId" = $1 ORDER BY id DESC
+       OFFSET $2 LIMIT $3
+     ) ORDER BY "captureId" DESC, "positionId" ASC`,
+    [layoutId, (page - 1) * pageSize, pageSize]
   );
   return rows;
 };
@@ -134,7 +136,7 @@ module.exports = {
   deleteCamera,
   updateCamera,
   getCameras,
-  getCaptures,
+  getFrames,
   getLatestCapture,
   getCaptureWithFrames,
   getLayouts,

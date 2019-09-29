@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const router = new Router();
+const express = require('express');
+const router = new express.Router();
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime-types');
@@ -21,17 +21,11 @@ module.exports = (commands, db) => {
     }
   });
 
-  router.get('/:key', async (req, res) => {
-    const { key } = req.params;
-    try {
-      const data = await readFile(path.join(UPLOADS_DIR, key));
-      res.set('Content-Type', mime.contentType(path.extname(key)));
-      res.send(data);
-    } catch (e) {
-      console.warn(e.message);
-      res.sendStatus(403);
-    }
-  });
+  router.use('/', express.static(UPLOADS_DIR, { 
+    immutable: true,
+    maxAge: 1000 * 3600 * 24 * 30,
+    setHeaders: (res, path, stat) => res.set('Content-Type', 'image/jpeg')
+  }));
 
   return router;
 };
