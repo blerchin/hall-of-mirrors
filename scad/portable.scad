@@ -1,10 +1,13 @@
 use <scad-utils/morphology.scad>
+use <nutsnbolts/cyl_head_bolt.scad>
 use <case.scad>
 include <helpers.scad>
 include <constants.scad>
 
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
 positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_SIZE)];
+
+FLOOR_HEIGHT = 15;
 
 module draw_phone(index, rotation, translation, with_fov) {
   echo(str("#", index, "\t ", rotation, "\t ", translation));
@@ -22,7 +25,7 @@ module draw_phone(index, rotation, translation, with_fov) {
 
 module draw_holder(foot=40) {
   w = 100;
-  h = 70;
+  h = 90;
   d = 40;
   translate([0, -foot, 0])
   translate([CASE_WIDTH/2 - w/2, 0, CASE_DEPTH/2 - d/2])
@@ -66,8 +69,21 @@ module holders() {
     }
   }
 }
-*difference() {
+
+module tripod_mount() {
+  translate([CUBE_SIZE/2 + 40, CUBE_SIZE/2, FLOOR_HEIGHT])
+    rotate([180, 0, 0])
+  screw("M6x20");
+}
+
+module floor() {
+  cube([CUBE_SIZE + 100, CUBE_SIZE + 100, FLOOR_HEIGHT]);
+}
+
+difference() {
   holders();
   phones();
+  floor();
+  tripod_mount();
 }
 phones(with_fov=true);

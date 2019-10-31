@@ -36,20 +36,26 @@ function get_safe_translation_and_rotation(index, size) = DRAW_RANDOM ?
    is_safe(position[0], position[1]) ? position : get_safe_translation_and_rotation(index, size)
   ) : [ POSITIONS[index][0], POSITIONS[index][1] ];
 
-module label(position_i, support_i, point, zpos) {
+module label(position_i, support_i, point, zpos, draw_text=true) {
+  $fn = 64;
   pos_name = str(position_i);
   support_name = chr(support_i + 65);
   support_length = support_len(point, zpos);
   color("white")
   translate([ point[0], point[1], 0])
     union() {
-      circle(2);
-      translate([5, 0, 0])
-      text(pos_name, size = 5);
-      translate([10, 0, 0])
-        text(support_name, size=3);
-      translate([5, -4, 0])
-        text(str(support_length), size=3);
+      translate([-1.5, 0, 0])
+        circle(1);
+      translate([1.5, 0, 0])
+        circle(1);
+      if(draw_text) {
+        translate([5, 0, 0])
+        text(pos_name, size = 5);
+        translate([10, 0, 0])
+          text(support_name, size=3);
+        translate([5, -4, 0])
+          text(str(support_length), size=3);
+      }
     }
   sep = "\t";
   echo(str(pos_name, support_name, sep, support_length, sep, point));

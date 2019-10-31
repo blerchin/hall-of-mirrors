@@ -26,13 +26,17 @@ module frame_half() {
   }
 }
 
-frame_half();
-translate([0, 0, FRAME_THICKNESS/2])
-  tongue();
+projection(cut=true)
+translate([0, 0, -5/32 * INCH ])
+union() {
+  frame_half();
+  translate([0, 0, FRAME_THICKNESS/2])
+    tongue();
 
-translate([FRAME_WIDTH + FRAME_PADDING, 0, 0])
-  difference() {
-    frame_half();
-    translate([0, 0, FRAME_THICKNESS / 2 - TONGUE_THICKNESS + d])
-      tongue();
-  }
+  translate([FRAME_WIDTH + FRAME_PADDING, 0, 0])
+    difference() {
+      frame_half();
+      translate([0, 0, FRAME_THICKNESS / 2 - TONGUE_THICKNESS + d])
+        tongue();
+    }
+}

@@ -4,14 +4,18 @@ include <helpers.scad>
 include <constants.scad>
 
 SUPPORT_THICKNESS = 2;
+//SCALE_FACTOR = PANE_WIDTH / PHONE_SCREEN_WIDTH;
+SCALE_FACTOR = 2.5;
 //#2D array of positions (rotation, translation)
 
-function support_len(point, zpos) = CEIL_CLEARANCE + CUBE_SIZE - point[2] - zpos;
+function support_len(point, zpos) = CEIL_CLEARANCE + (SCALE_FACTOR * CUBE_SIZE) - point[2] - zpos;
+
+function scale_vec(vec, amt) = [vec[0] * amt, vec[1] * amt, vec[2] * amt];
 
 module support(point, zpos) {
   color("black")
   translate(point)
-    cylinder(d = SUPPORT_THICKNESS, h = CEIL_CLEARANCE + CUBE_SIZE - point[2] - zpos);
+    cylinder(d = SUPPORT_THICKNESS, h = CEIL_CLEARANCE + (SCALE_FACTOR * CUBE_SIZE) - point[2] - zpos);
 }
 
 module draw_supports(rotation, zpos, index, label_only = false) {
@@ -19,7 +23,7 @@ module draw_supports(rotation, zpos, index, label_only = false) {
     point = PANE_ANCHOR_POINTS[p];
     position = rotate_point(rotation, point);
     if (label_only) {
-      label(index, p, position, zpos);
+      label(index, p, position, zpos, draw_text=true);
     } else {
       support(position, zpos);
     }
@@ -41,10 +45,13 @@ module draw(index, rotation, translation) {
   }
 }
 
+
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
 for (i=[0:numToDraw - 1]) {
   position = get_safe_translation_and_rotation(i, CUBE_SIZE);
-  translate([0, 0, -400])
-    draw(i, position[0], position[1]);
-  draw_plan(i, position[0], position[1]);
+  rotation = position[0];
+  translation = scale_vec(position[1], SCALE_FACTOR);
+  *translate([0, 0, -(SCALE_FACTOR * CUBE_SIZE) - CEIL_CLEARANCE])
+    draw(i, rotation, translation);
+  draw_plan(i, rotation, translation);
 }
