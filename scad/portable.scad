@@ -23,13 +23,14 @@ module draw_phone(index, rotation, translation, with_fov) {
   }
 }
 
-module draw_holder(foot=40) {
-  w = 100;
-  h = 90;
-  d = 40;
-  translate([0, -foot, 0])
-  translate([CASE_WIDTH/2 - w/2, 0, CASE_DEPTH/2 - d/2])
-    cube([w, h + foot, d]);
+module draw_holder() {
+  translate([CASE_WIDTH/2 - HOLDER_WIDTH/2, 0, CASE_DEPTH/2 - HOLDER_DEPTH/2])
+    rounded_cube([HOLDER_WIDTH, HOLDER_HEIGHT, HOLDER_DEPTH]);
+}
+module draw_holder_foot(length=10) {
+  translate([0, -length / 2, 0])
+    translate([CASE_WIDTH/2 - HOLDER_WIDTH/2, 0, CASE_DEPTH/2 - HOLDER_DEPTH/2])
+      rounded_cube([HOLDER_WIDTH, length, HOLDER_DEPTH]);
 }
 
 module slot(id) {
@@ -57,15 +58,29 @@ module phones(with_fov=false) {
   }
 }
 
+module core() {
+  sphere(d=100);
+}
+
 module holders() {
   color("blue")
-  hull(){
+  union() {
     for (p=positions) {
-      translate(p[1])
-      rotate(p[0])
-        union() {
-          draw_holder();
-        }
+        translate(p[1])
+        rotate(p[0])
+        draw_holder();
+    }
+    for (p=positions) {
+      hull()
+      union() {
+        translate(p[1])
+        rotate(p[0])
+          union() {
+            draw_holder_foot();
+          }
+        translate([CUBE_SIZE / 2, CUBE_SIZE / 2, CUBE_SIZE / 2])
+          core();
+      }
     }
   }
 }

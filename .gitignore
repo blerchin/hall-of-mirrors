@@ -8,3 +8,5 @@ s3credentials.json
 node_modules
 .env
 creds
+stl
+svg
