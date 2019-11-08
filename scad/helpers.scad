@@ -60,3 +60,13 @@ module label(position_i, support_i, point, zpos, draw_text=true) {
   sep = "\t";
   echo(str(pos_name, support_name, sep, support_length, sep, point));
 }
+
+module rounded_cube(v, radius = 5, $fn = 32) {
+  points = [ [0, 0, 0], [1, 0, 0], [0, 1, 0], [1, 1, 0],
+             [0, 0, 1], [1, 0, 1], [0, 1, 1], [1, 1, 1] ];
+  hull()
+  for (p = points) {
+    translate([p[0] * v[0], p[1] * v[1], p[2] * v[2]])
+    sphere(r = radius);
+  }
+}

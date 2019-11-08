@@ -1,4 +1,4 @@
-include <layouts/l3.scad>
+include <layouts/l4-water.scad>
 
 INCH = 25.4;
 CUBE_SIZE = 300;
@@ -7,8 +7,8 @@ NUM_PHONES = 10;
 DRAW_RANDOM = false;
 
 
-PANE_WIDTH = 9 * INCH + 0.1;
-PANE_HEIGHT = 11 * INCH + 0.1;
+PANE_WIDTH = 6.25 * INCH;
+PANE_HEIGHT = 4 * INCH;
 PANE_THICKNESS = 2;
 
 FRAME_PADDING = INCH / 4;
@@ -51,6 +51,10 @@ PANE_ANCHOR_POINTS = [
   [PANE_WIDTH, PANE_HEIGHT - PANE_ANCHOR_OFFSET, 0],
   [PANE_WIDTH, PANE_ANCHOR_OFFSET, 0]
 ];
+
+HOLDER_WIDTH = 100;
+HOLDER_HEIGHT = 20;
+HOLDER_DEPTH = 20;
 
 
 d = 0.01;

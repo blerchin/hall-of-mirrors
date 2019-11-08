@@ -7,3 +7,4 @@ s3credentials.json
 .idea
 node_modules
 .env
+creds
