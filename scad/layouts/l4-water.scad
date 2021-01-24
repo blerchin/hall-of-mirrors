@@ -8,7 +8,10 @@ POSITIONS = [
   [ [80, 0, 86.5],  [ 108.990501, 184.259783, -0.300000 ] ]
 ];
 
-TERRAIN = "../images/layouts/4-water/castaic/12836.stl";
-TERRAIN_SCALE = 12;
+FIELD_OF_VIEW = 94;
+
+TERRAIN = "../terrain/castaic-power-station.stl";
+TERRAIN_SCALE = 69614;
+TERRAIN_DISPLAY_SCALE = 12;
 TERRAIN_ROTATE = [0, 0, 180];
 TERRAIN_OFFSET = [-60, 60, 0];

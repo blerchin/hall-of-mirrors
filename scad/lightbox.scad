@@ -3,38 +3,13 @@ use <case.scad>
 include <helpers.scad>
 include <constants.scad>
 
-MAX_EXTENT = 300;
+MAX_EXTENT = 430;
 SUPPORT_THICKNESS = 2;
 //SCALE_FACTOR = PANE_WIDTH / PHONE_SCREEN_WIDTH;
-SCALE_FACTOR = 1;
 //#2D array of positions (rotation, translation)
-
-function support_len(point, zpos) = CEIL_CLEARANCE + (SCALE_FACTOR * CUBE_SIZE) - point[2] - zpos;
+DISPLAY_GUIDES = false;
 
 function scale_vec(vec, amt) = [vec[0] * amt, vec[1] * amt, vec[2] * amt];
-
-module support(point, zpos) {
-  color("black")
-  translate(point)
-    cylinder(d = SUPPORT_THICKNESS, h = CEIL_CLEARANCE + (SCALE_FACTOR * CUBE_SIZE) - point[2] - zpos);
-}
-
-module draw_supports(rotation, zpos, index, label_only = false) {
-  for (p = [0 : len(PANE_ANCHOR_POINTS) - 1]) {
-    point = PANE_ANCHOR_POINTS[p];
-    position = rotate_point(rotation, point);
-    if (label_only) {
-      label(index, p, position, zpos, draw_text=true);
-    } else {
-      support(position, zpos);
-    }
-  }
-}
-
-module draw_plan(index, rotation, translation) {
-  translate([ translation[0], translation[1], 0])
-    draw_supports(rotation, translation[2], index, true);
-}
 
 module label(id) {
   color("black")
@@ -43,14 +18,30 @@ module label(id) {
     text(str(id));
 }
 
-module draw(index, rotation, translation) {
+module draw(index, rotation, translation, width = PANE_WIDTH) {
+  offset = get_frame_dist(FIELD_OF_VIEW, width);
+  aspect_ratio = PANE_WIDTH / PANE_HEIGHT;
+  height = width / aspect_ratio;
   translate(translation)
   union() {
     echo(str("#", index, "\t ", rotation, "\t ", translation));
-    rotate(rotation)
-      union() {
-        cube([PANE_WIDTH, PANE_HEIGHT, PANE_THICKNESS + 1], center=true);
+    echo(str("offset: ", offset));
+    if(DISPLAY_GUIDES) {
+      color("red")
+      rotate(rotation)
+      union(){
+        sphere(r=2);
+        cylinder(r=1, h=1000);
         label(index);
+      }
+    }
+    rotate(rotation)
+    translate([0, 0, offset])
+      union() {
+        color("skyblue")
+          cube([width + 1, height, PANE_THICKNESS + 1], center=true);
+        color("black")
+          label(index);
       }
   }
 }
@@ -62,24 +53,27 @@ module panes() {
     position = get_safe_translation_and_rotation(i, CUBE_SIZE);
     rotation = position[0];
     translation = scale_vec(position[1], SCALE_FACTOR);
-    draw(i, rotation, translation);
+    width = POSITIONS[i][2] ? POSITIONS[i][2] : PANE_WIDTH;
+    draw(i, rotation, translation, width);
   }
 }
 
-module terrain_extent() {
+module terrain_extent(height = 300) {
+  color("red")
   difference() {
-    cube(10000, center = true);
-    cube(MAX_EXTENT, center=true);
+    cube([10000, 10000, height], center=true);
+    cube([MAX_EXTENT, MAX_EXTENT, height + 1], center=true);
   }
 }
-
+*translate([10, -50, 0])
+terrain_extent();
 if (TERRAIN) {
   difference() {
     translate(TERRAIN_OFFSET)
     rotate(TERRAIN_ROTATE)
-    scale(TERRAIN_SCALE)
+    scale(TERRAIN_DISPLAY_SCALE)
       import(TERRAIN);
-    *translate([0, 60, 0])
+    *translate([40, 57, 0])
       terrain_extent();
     panes();
   }

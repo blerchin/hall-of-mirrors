@@ -8,7 +8,7 @@ from geographiclib.geodesic import Geodesic
 from dateutil import tz
 from datetime import datetime, timedelta
 
-DIRECTORY = os.path.join(os.getcwd(), 'images/layouts/7-bigtujunga');
+DIRECTORY = os.path.join(os.getcwd(), 'images/layouts/9-littletujunga');
 
 def _get_if_exist(data, key):
     if key in data:

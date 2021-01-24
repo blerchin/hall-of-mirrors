@@ -1,4 +1,4 @@
-include <layouts/l4-water.scad>
+include <layouts/l5-cascades.scad>
 
 INCH = 25.4;
 CUBE_SIZE = 300;
@@ -7,8 +7,8 @@ NUM_PHONES = 10;
 DRAW_RANDOM = false;
 
 
-PANE_WIDTH = 6.25 * INCH;
-PANE_HEIGHT = 4 * INCH;
+PANE_WIDTH = 10 * INCH;
+PANE_HEIGHT = 8 * INCH;
 PANE_THICKNESS = 2;
 
 FRAME_PADDING = INCH / 4;

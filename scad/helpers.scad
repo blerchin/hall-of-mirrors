@@ -1,5 +1,8 @@
 include <constants.scad>
 
+function get_frame_width(fov, dist) = 2 * dist * tan(fov / 2);
+function get_frame_dist(fov, width) = width / (2 * tan(fov / 2));
+
 function get_rotation_matricies(theta) = [
   [[1, 0, 0], [0, cos(theta), -sin(theta)], [0, sin(theta), cos(theta)]],
   [[cos(theta), 0, sin(theta)], [0, 1, 0], [-sin(theta), 0, cos(theta)]],

@@ -1,4 +1,5 @@
 server/uploads
+images/layouts
 .DS_Store
 *.swp
 android/app/build
