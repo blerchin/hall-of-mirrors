@@ -3,7 +3,6 @@ use <nutsnbolts/cyl_head_bolt.scad>
 use <case.scad>
 include <helpers.scad>
 include <constants.scad>
-
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
 positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_SIZE)];
 
