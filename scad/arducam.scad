@@ -42,13 +42,13 @@ module draw_holder(margin = HOLDER_MARGIN) {
   translate([-margin/2, -margin/2, d2])
     union() {
       cube([w, h, d]);
-    translate([0, -USB_MICROB_LENGTH + d2, 0])
+    translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
       cube([USB_MICROB_WIDTH + margin, USB_MICROB_LENGTH + margin, BOARD_DEPTH]);
   }
 }
 
-module slot(id = null) {
-  if (id != null) {
+module slot(id = -1) {
+  if (id != -1) {
     color("black")
     translate([BOARD_WIDTH/2 + 4 , BOARD_HEIGHT/2 - 3, BOARD_DEPTH + 0.5])
     rotate([0, 180, 0])
@@ -59,14 +59,12 @@ module slot(id = null) {
   union() {
     cube([BOARD_WIDTH, BOARD_HEIGHT, BOARD_DEPTH + 70]);
     //room for usb connection
-    translate([0, -USB_MICROB_LENGTH + d2, 0])
+    translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
       cube([USB_MICROB_WIDTH, USB_MICROB_LENGTH, BOARD_DEPTH + 70]);
   }
   //channel back to cavity
-  translate([0, -USB_MICROB_LENGTH + d2, 0])
+  translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
     cube([USB_CHANNEL_WIDTH, USB_MICROB_LENGTH, USB_CHANNEL_DEPTH]);
-  translate([0, -USB_MICROB_LENGTH + d2, USB_CHANNEL_DEPTH])
-    cube([USB_CHANNEL_WIDTH, USB_MICROB_LENGTH, USB_CHANNEL_WIDTH]);
 }
 module field_of_view(length=70) {
   d2 = 2 * length * cos(PHONE_LENS_FIELD_OF_VIEW / 2);
