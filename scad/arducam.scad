@@ -1,6 +1,6 @@
 use <scad-utils/morphology.scad>
 use <nutsnbolts/cyl_head_bolt.scad>
-use <case.scad>
+use <arducam-cap.scad>
 include <helpers.scad>
 include <constants.scad>
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
@@ -9,14 +9,13 @@ positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_
 $fn = 128;
 
 FLOOR_HEIGHT = 5;
-CAVITY_SCALE = 0.75;
-HOLDER_MARGIN = 2;
 
 module cavity(factor, margin=INSERT_MARGIN) {
   offset = (1-factor)/2 * CUBE_SIZE;
   translate([offset, offset, offset])
   scale(factor)
     holders();
+  //base fits in here
   translate([CUBE_SIZE/2 - FLOOR_SIZE/2 + margin/2, CUBE_SIZE/2 - FLOOR_SIZE/2 + margin/2, -d2])
     cube([FLOOR_SIZE - margin, FLOOR_SIZE - margin, FLOOR_HEIGHT + INSERT_HEIGHT]);
 }
@@ -27,7 +26,7 @@ module draw_camera(index, rotation, translation, with_fov) {
   difference() {
     rotate(rotation)
       union() {
-        slot(index);
+        draw_slot(index);
         if(with_fov) {
           field_of_view();
         }
@@ -35,33 +34,21 @@ module draw_camera(index, rotation, translation, with_fov) {
   }
 }
 
-module draw_holder(margin = HOLDER_MARGIN) {
-  w = BOARD_WIDTH + margin;
-  h = BOARD_HEIGHT + margin;
-  d = BOARD_DEPTH + margin;
-  translate([-margin/2, -margin/2, d2])
-    union() {
-      cube([w, h, d]);
-    translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
-      cube([USB_MICROB_WIDTH + margin, USB_MICROB_LENGTH + margin, BOARD_DEPTH]);
-  }
+module draw_holder(margin = BOARD_HOLDER_MARGIN) {
+  //this is where we draw the outer holders that will determine the hull
+  holder(margin * 2);
 }
 
-module slot(id = -1) {
+module draw_slot(id = -1) {
   if (id != -1) {
     color("black")
-    translate([BOARD_WIDTH/2 + 4 , BOARD_HEIGHT/2 - 3, BOARD_DEPTH + 0.5])
+    translate([BOARD_WIDTH/2 + 4 , BOARD_HEIGHT/2 - 3, 2.5])
     rotate([0, 180, 0])
     linear_extrude(0.5)
       text(str(id));
   }
-  translate([0, 0, -70])
-  union() {
-    cube([BOARD_WIDTH, BOARD_HEIGHT, BOARD_DEPTH + 70]);
-    //room for usb connection
-    translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
-      cube([USB_MICROB_WIDTH, USB_MICROB_LENGTH, BOARD_DEPTH + 70]);
-  }
+  translate([0, 0, -d2])
+    holder(margin=BOARD_HOLDER_MARGIN + 0.5, depth=70);
   //channel back to cavity
   translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
     cube([USB_CHANNEL_WIDTH, USB_MICROB_LENGTH, USB_CHANNEL_DEPTH]);
@@ -120,9 +107,7 @@ difference() {
   holders();
   cameras();
   cavity(CAVITY_SCALE);
-  wire_channel();
+  //wire_channel();
   //raspi();
-  translate([0, 0, CUBE_SIZE - 5])
-    cube([CUBE_SIZE, CUBE_SIZE, CUBE_SIZE]);
 }
 //cameras(with_fov=true);
