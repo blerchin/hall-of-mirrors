@@ -24,7 +24,7 @@ module tripod_mount() {
 }
 
 difference() {
-  cube([w, l, INSERT_HEIGHT - SLOP]);
+  cube([w, l, INSERT_HEIGHT - 5 - SLOP]);
   tripod_mount();
   wire_channel();
 }
