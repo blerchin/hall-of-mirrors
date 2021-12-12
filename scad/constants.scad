@@ -1,4 +1,4 @@
-include <layouts/l8-playa-hill.scad>
+include <layouts/l9-pinhole-test.scad>
 
 INCH = 25.4;
 CEIL_CLEARANCE = 600;
