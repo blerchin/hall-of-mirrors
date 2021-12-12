@@ -1,4 +1,4 @@
-include <layouts/l6-playa.scad>
+include <layouts/l8-playa-hill.scad>
 
 INCH = 25.4;
 CEIL_CLEARANCE = 600;
@@ -42,6 +42,9 @@ BOARD_DEPTH = 6;
 BOARD_LENS_DIA = 7.75;
 
 BOARD_HOLDER_MARGIN = 2; //temp to address poor fit. ===2
+
+DISPLAY_WIDTH = 32.5;
+DISPLAY_HEIGHT = 18;
 
 USB_MICROB_WIDTH = 8.5;
 USB_MICROB_LENGTH = 16;

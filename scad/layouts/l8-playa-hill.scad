@@ -1,0 +1,11 @@
+
+POSITIONS = [
+  [[100, 0, 60],  [20, 50, 50]],
+  [[100, 90, 245],  [80, 40, 80]],
+  [[90, 0, 320],  [70, 80, 50]],
+];
+INSERT_HEIGHT = 20;
+INSERT_MARGIN = 7;
+CAVITY_SCALE = 0.70;
+CUBE_SIZE = 110;
+FLOOR_SIZE = 55;

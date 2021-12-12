@@ -8,13 +8,8 @@ SLOP = 0.5;
 w = FLOOR_SIZE-INSERT_MARGIN - SLOP;
 l = FLOOR_SIZE-INSERT_MARGIN - SLOP;
 
-module wire_channel() {
-  translate([
-    USB_CHANNEL_WIDTH/2 + 1,
-    USB_CHANNEL_WIDTH/2 + 1,
-    -d2
-     ])
-    cylinder(d=USB_CHANNEL_WIDTH, 30);
+module wire_channel(size=USB_CHANNEL_WIDTH + 5) {
+  cube([size, size, 30]);
 }
 
 module tripod_mount() {
@@ -25,6 +20,9 @@ module tripod_mount() {
 
 difference() {
   cube([w, l, INSERT_HEIGHT - 5 - SLOP]);
+  
+  translate([INSERT_MARGIN/2, INSERT_MARGIN/2, INSERT_MARGIN/2])
+    cube([w - INSERT_MARGIN, l - INSERT_MARGIN, INSERT_HEIGHT]);
   tripod_mount();
   wire_channel();
 }
