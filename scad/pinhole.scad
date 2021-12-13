@@ -28,13 +28,14 @@ module draw_camera(index, rotation, translation, with_fov) {
   difference() {
     rotate(rotation)
       union() {
-        translate([0, 0, -5])
-          #cylinder(d=PINHOLE_SIZE, h=120);
+        //for previewing angle
+        //translate([0, 0, -5])
+         // cylinder(d=PINHOLE_SIZE, h=10);
         translate([0, 0, .7])
-          draw_aperture_ring(PINHOLE_SURROUND_DIA / 2 + 1, 1.5, false);
-        translate([0, 0, 0.5]) //can't be too close to outside of model for slicing reasons
+          draw_aperture_ring(PINHOLE_SURROUND_DIA / 2 + 1, 2, false);
+        #translate([0, 0, 0]) //can't be too close to outside of model for slicing reasons
           //projection cone
-          cylinder(d1=0.01, d2=2 * PINHOLE_SURROUND_DIA / 3, h=15);
+          cylinder(d1=0.1, d2=2 * PINHOLE_SURROUND_DIA / 3, h=8);
     }
   }
 }
@@ -49,7 +50,7 @@ module apertures(dia, thickness) {
   }
 }
 
-module draw_aperture_ring(dia = PINHOLE_SURROUND_DIA / 2, pin_dia = 1, with_apertures=true) {
+module draw_aperture_ring(dia = PINHOLE_SURROUND_DIA / 2, pin_dia = 1.9, with_apertures=true) {
   thickness = 2;
   translate([0, dia/4, -1 * thickness])
     difference() {
@@ -65,21 +66,6 @@ module draw_aperture_ring(dia = PINHOLE_SURROUND_DIA / 2, pin_dia = 1, with_aper
 module draw_holder(margin = BOARD_HOLDER_MARGIN) {
   //this is where we draw the outer holders that will determine the hull
   cylinder(d=PINHOLE_SURROUND_DIA, h=PINHOLE_LENGTH);
-}
-
-module draw_slot(id = -1) {
-  if (id != -1) {
-    color("black")
-    translate([4 , -3, 2.5])
-    rotate([0, 180, 0])
-    linear_extrude(0.5)
-      text(str(id));
-  }
-  translate([0, 0, -d2])
-    holder(margin=BOARD_HOLDER_MARGIN + 0.5, depth=70);
-  //channel back to cavity
-  translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
-    cube([USB_CHANNEL_WIDTH, USB_MICROB_LENGTH, USB_CHANNEL_DEPTH]);
 }
 
 module cameras(with_fov=false) {
@@ -114,28 +100,10 @@ module floor() {
     cube([FLOOR_SIZE, FLOOR_SIZE, FLOOR_HEIGHT]);
 }
 
-module wire_channel() {
-  translate([
-    CUBE_SIZE/2 - FLOOR_SIZE/2 + USB_CHANNEL_WIDTH, 
-    CUBE_SIZE/2 - FLOOR_SIZE/2 + USB_CHANNEL_WIDTH,
-    -d2
-     ])
-    cylinder(d=USB_CHANNEL_WIDTH, 30);
-}
-
-module raspi() {
-  translate([
-    CUBE_SIZE/2 - RASPI_HEIGHT/2,
-    CUBE_SIZE/2 - RASPI_WIDTH/2,
-    -d2
-     ])
-  cube([RASPI_HEIGHT, RASPI_WIDTH, RASPI_LENGTH]);
-}
-
-difference() {
+*difference() {
   holders();
   cameras();
   cavity(CAVITY_SCALE);
 }
-//rings();
+draw_aperture_ring();
 //cameras(with_fov=true);
