@@ -8,9 +8,9 @@ positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_
 $fn = 128;
 
 FLOOR_HEIGHT = 5;
-PINHOLE_SIZE = 0.2;
+PINHOLE_SIZE = 1;
 PINHOLE_LENGTH = 5;
-PINHOLE_SURROUND_DIA = 15;
+PINHOLE_SURROUND_DIA = 40;
 
 module cavity(factor, margin=INSERT_MARGIN) {
   offset = (1-factor)/2 * CUBE_SIZE;
@@ -29,15 +29,37 @@ module draw_camera(index, rotation, translation, with_fov) {
     rotate(rotation)
       union() {
         translate([0, 0, -5])
-          #cylinder(d=PINHOLE_SIZE, h=PINHOLE_SURROUND_DIA);
+          #cylinder(d=PINHOLE_SIZE, h=120);
+        translate([0, 0, .7])
+          draw_aperture_ring(PINHOLE_SURROUND_DIA / 2 + 1, 1.5, false);
         translate([0, 0, 0.5]) //can't be too close to outside of model for slicing reasons
           //projection cone
-          #cylinder(d1=0.01, d2=2 * PINHOLE_SURROUND_DIA / 3, h=3);
-        if(with_fov) {
-          field_of_view();
-        }
+          cylinder(d1=0.01, d2=2 * PINHOLE_SURROUND_DIA / 3, h=15);
     }
   }
+}
+
+module apertures(dia, thickness) {
+  positions = [0, 45, 90, 135, 180, 225, 270, 315];
+  for(i = [0 : len(positions) - 1]) {
+    rotate([0, 0, positions[i]]) {
+      translate([0, dia/4, -0.1])
+        cylinder(d=2/len(positions) * i, h=thickness + 1);
+    }
+  }
+}
+
+module draw_aperture_ring(dia = PINHOLE_SURROUND_DIA / 2, pin_dia = 1, with_apertures=true) {
+  thickness = 2;
+  translate([0, dia/4, -1 * thickness])
+    difference() {
+      cylinder(d=dia, h=thickness);
+      if (with_apertures)
+        apertures(dia, thickness);
+    }
+  //mounting pin
+  translate([0, dia/4, -0.1])
+    cylinder(d=pin_dia, h=2);
 }
 
 module draw_holder(margin = BOARD_HOLDER_MARGIN) {
@@ -59,16 +81,19 @@ module draw_slot(id = -1) {
   translate([BOARD_WIDTH/2 - USB_MICROB_WIDTH/2, -USB_MICROB_LENGTH + d2, 0])
     cube([USB_CHANNEL_WIDTH, USB_MICROB_LENGTH, USB_CHANNEL_DEPTH]);
 }
-module field_of_view(length=70) {
-  d2 = 2 * length * cos(PHONE_LENS_FIELD_OF_VIEW / 2);
-  translate([BOARD_WIDTH/2, BOARD_HEIGHT/2, 0])
-  rotate([180, 0, 0])
-    cylinder(d1 = PHONE_LENS_DIA, d2=d2, h=length);
-}
 
 module cameras(with_fov=false) {
   for (i=[0:len(positions) - 1]) {
     draw_camera(i, positions[i][0], positions[i][1], with_fov);
+  }
+}
+
+module rings() {
+  color("yellow")
+  for (p=positions) {
+    translate(p[1])
+    rotate(p[0])
+      draw_aperture_ring();
   }
 }
 
@@ -112,4 +137,5 @@ difference() {
   cameras();
   cavity(CAVITY_SCALE);
 }
+//rings();
 //cameras(with_fov=true);
