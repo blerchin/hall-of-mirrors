@@ -1,5 +1,6 @@
 use <scad-utils/morphology.scad>
 use <nutsnbolts/cyl_head_bolt.scad>
+use <threads-scad/threads.scad>
 include <helpers.scad>
 include <constants.scad>
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
@@ -7,10 +8,11 @@ positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_
 
 $fn = 128;
 
+
 FLOOR_HEIGHT = 5;
 PINHOLE_SIZE = 1;
 PINHOLE_LENGTH = 5;
-PINHOLE_SURROUND_DIA = 40;
+PINHOLE_SURROUND_DIA = 30;
 
 module cavity(factor, margin=INSERT_MARGIN) {
   offset = (1-factor)/2 * CUBE_SIZE;
@@ -22,21 +24,18 @@ module cavity(factor, margin=INSERT_MARGIN) {
     cube([FLOOR_SIZE - margin, FLOOR_SIZE - margin, FLOOR_HEIGHT + INSERT_HEIGHT]);
 }
 
+module draw_c_mount() {
+  thirty_two_tpi = .794;
+  #ScrewThread(INCH, 20, pitch=thirty_two_tpi);
+}
+
 module draw_camera(index, rotation, translation, with_fov) {
   echo(str("#", index, "\t ", rotation, "\t ", translation));
   translate(translation)
   difference() {
     rotate(rotation)
-      union() {
-        //for previewing angle
-        //translate([0, 0, -5])
-         // cylinder(d=PINHOLE_SIZE, h=10);
-        translate([0, 0, .7])
-          draw_aperture_ring(PINHOLE_SURROUND_DIA / 2 + 1, 2, false);
-        #translate([0, 0, 0]) //can't be too close to outside of model for slicing reasons
-          //projection cone
-          cylinder(d1=0.1, d2=2 * PINHOLE_SURROUND_DIA / 3, h=8);
-    }
+      translate([0, 0, -10])
+        draw_c_mount();
   }
 }
 
@@ -100,10 +99,10 @@ module floor() {
     cube([FLOOR_SIZE, FLOOR_SIZE, FLOOR_HEIGHT]);
 }
 
-*difference() {
+difference() {
   holders();
   cameras();
   cavity(CAVITY_SCALE);
 }
 draw_aperture_ring();
-//cameras(with_fov=true);
+*cameras(with_fov=true);
