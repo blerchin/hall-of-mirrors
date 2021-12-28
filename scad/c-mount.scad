@@ -6,103 +6,82 @@ include <constants.scad>
 numToDraw = DRAW_RANDOM ? NUM_PHONES : len(POSITIONS);
 positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_SIZE)];
 
-$fn = 128;
+$fn = 256;
 
 
 FLOOR_HEIGHT = 5;
 PINHOLE_SIZE = 1;
-PINHOLE_LENGTH = 5;
-PINHOLE_SURROUND_DIA = 30;
+PINHOLE_LENGTH = 10;
+PINHOLE_SURROUND_DIA = 27;
+THREAD_HEIGHT = 4;
+C_MOUNT_DIAMETER = 0.99 * INCH;
 
 module cavity(factor, margin=INSERT_MARGIN) {
-  offset = (1-factor)/2 * CUBE_SIZE;
-  translate([offset, offset, offset])
-  scale(factor)
-    holders();
+  holders([0, 0, -THREAD_HEIGHT], false);
   //base fits in here
-  translate([CUBE_SIZE/2 - FLOOR_SIZE/2 + margin/2, CUBE_SIZE/2 - FLOOR_SIZE/2 + margin/2, -d2])
+  *translate([-FLOOR_SIZE/2 + margin/2, -FLOOR_SIZE/2 + margin/2, -d2])
     cube([FLOOR_SIZE - margin, FLOOR_SIZE - margin, FLOOR_HEIGHT + INSERT_HEIGHT]);
 }
 
-module draw_c_mount() {
+module draw_c_mount(height) {
   thirty_two_tpi = .794;
-  #ScrewThread(INCH, 20, pitch=thirty_two_tpi);
+  ScrewThread(INCH, height, pitch=thirty_two_tpi);
 }
 
 module draw_camera(index, rotation, translation, with_fov) {
-  echo(str("#", index, "\t ", rotation, "\t ", translation));
-  translate(translation)
-  difference() {
-    rotate(rotation)
-      translate([0, 0, -10])
-        draw_c_mount();
+  union(){
+    #sphere(r=1);
+    translate([0, 0, -10 *THREAD_HEIGHT])
+      cylinder(d=C_MOUNT_DIAMETER, h=20 *THREAD_HEIGHT);
+    translate([0, 0, THREAD_HEIGHT - 0.1])
+      cylinder(d=1.4*INCH, 3 * THREAD_HEIGHT); //clearance for focus ring
   }
+  //draw_c_mount(thread_height);
 }
 
-module apertures(dia, thickness) {
-  positions = [0, 45, 90, 135, 180, 225, 270, 315];
-  for(i = [0 : len(positions) - 1]) {
-    rotate([0, 0, positions[i]]) {
-      translate([0, dia/4, -0.1])
-        cylinder(d=2/len(positions) * i, h=thickness + 1);
-    }
-  }
-}
 
-module draw_aperture_ring(dia = PINHOLE_SURROUND_DIA / 2, pin_dia = 1.9, with_apertures=true) {
-  thickness = 2;
-  translate([0, dia/4, -1 * thickness])
-    difference() {
-      cylinder(d=dia, h=thickness);
-      if (with_apertures)
-        apertures(dia, thickness);
-    }
-  //mounting pin
-  translate([0, dia/4, -0.1])
-    cylinder(d=pin_dia, h=2);
-}
-
-module draw_holder(margin = BOARD_HOLDER_MARGIN) {
+module draw_holder(offset) {
   //this is where we draw the outer holders that will determine the hull
-  cylinder(d=PINHOLE_SURROUND_DIA, h=PINHOLE_LENGTH);
+  translate(offset)
+    cylinder(d=C_MOUNT_DIAMETER, h=THREAD_HEIGHT);
 }
 
 module cameras(with_fov=false) {
-  for (i=[0:len(positions) - 1]) {
-    draw_camera(i, positions[i][0], positions[i][1], with_fov);
+  with_locations() {
+    draw_camera();
   }
 }
 
-module rings() {
-  color("yellow")
-  for (p=positions) {
-    translate(p[1])
-    rotate(p[0])
-      draw_aperture_ring();
-  }
-}
-
-module holders() {
+module holders(offset=[0, 0, 0], draw_floor = true) {
   color("blue")
   hull(){
-    for (p=positions) {
-      translate(p[1])
-      rotate(p[0])
-        draw_holder();
+    with_locations() {
+      draw_holder(offset);
     }
-    floor();
+    if (draw_floor) {
+      floor();
+    }
+  }
+}
+
+module with_locations() {
+  for (i=[0:len(POSITIONS) - 1]) {
+    rotate(POSITIONS[i][0])
+      translate([FLANGE_FOCAL_DISTANCE, 0, 0])
+        rotate(POSITIONS[i][1])
+          rotate([0, 90, 0])
+            children();
   }
 }
 
 module floor() {
-  translate([CUBE_SIZE/2 - FLOOR_SIZE/2, CUBE_SIZE/2 - FLOOR_SIZE/2, 0])
+  translate([-FLOOR_SIZE/2, -FLOOR_SIZE/2, 0])
     cube([FLOOR_SIZE, FLOOR_SIZE, FLOOR_HEIGHT]);
 }
 
 difference() {
   holders();
   cameras();
-  cavity(CAVITY_SCALE);
+  *translate([0, 0, -3])
+    #cavity(CAVITY_SCALE);
 }
-draw_aperture_ring();
-*cameras(with_fov=true);

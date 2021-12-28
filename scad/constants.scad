@@ -1,4 +1,4 @@
-include <layouts/l9-pinhole-test.scad>
+include <layouts/l10-single-lens.scad>
 
 INCH = 25.4;
 CEIL_CLEARANCE = 600;
