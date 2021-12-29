@@ -9,10 +9,9 @@ positions = [for(i=[0:numToDraw - 1]) get_safe_translation_and_rotation(i, CUBE_
 $fn = 256;
 
 
-FLOOR_HEIGHT = 5;
 PINHOLE_SIZE = 1;
 PINHOLE_LENGTH = 10;
-PINHOLE_SURROUND_DIA = 27;
+PINHOLE_SURROUND_DIA = 25;
 THREAD_HEIGHT = 4;
 C_MOUNT_DIAMETER = 0.99 * INCH;
 
@@ -34,7 +33,7 @@ module draw_camera(index, rotation, translation, with_fov) {
     translate([0, 0, -10 *THREAD_HEIGHT])
       cylinder(d=C_MOUNT_DIAMETER, h=20 *THREAD_HEIGHT);
     translate([0, 0, THREAD_HEIGHT - 0.1])
-      cylinder(d=1.4*INCH, 3 * THREAD_HEIGHT); //clearance for focus ring
+      cylinder(d=1.4*INCH, 6 * THREAD_HEIGHT); //clearance for focus ring
   }
   //draw_c_mount(thread_height);
 }
@@ -66,11 +65,11 @@ module holders(offset=[0, 0, 0], draw_floor = true) {
 
 module with_locations() {
   for (i=[0:len(POSITIONS) - 1]) {
-    rotate(POSITIONS[i][0])
-      translate([FLANGE_FOCAL_DISTANCE, 0, 0])
-        rotate(POSITIONS[i][1])
-          rotate([0, 90, 0])
-            children();
+    translate(POSITIONS[i][1])
+      rotate(POSITIONS[i][0])
+        translate([FLANGE_FOCAL_DISTANCE, 0, 0])
+            rotate([0, 90, 0])
+              children();
   }
 }
 
