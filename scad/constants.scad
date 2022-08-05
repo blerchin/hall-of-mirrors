@@ -1,4 +1,4 @@
-include <layouts/l10-single-lens.scad>
+include <layouts/l12-triple-lens-m42.scad>
 
 INCH = 25.4;
 CEIL_CLEARANCE = 600;

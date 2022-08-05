@@ -12,8 +12,7 @@ $fn = 256;
 PINHOLE_SIZE = 1;
 PINHOLE_LENGTH = 10;
 PINHOLE_SURROUND_DIA = 25;
-THREAD_HEIGHT = 4;
-C_MOUNT_DIAMETER = 0.99 * INCH;
+THREAD_HEIGHT = 3.5;
 
 module cavity(factor, margin=INSERT_MARGIN) {
   holders([0, 0, -THREAD_HEIGHT], false);
@@ -27,22 +26,26 @@ module draw_c_mount(height) {
   ScrewThread(INCH, height, pitch=thirty_two_tpi);
 }
 
+module draw_m42_mount(height) {
+  ScrewThread(MOUNT_DIAMETER, height, pitch=1);
+}
+
 module draw_camera(index, rotation, translation, with_fov) {
   union(){
     #sphere(r=1);
-    translate([0, 0, -10 *THREAD_HEIGHT])
-      cylinder(d=C_MOUNT_DIAMETER, h=20 *THREAD_HEIGHT);
+    translate([0, 0, -20 *THREAD_HEIGHT])
+      cylinder(d=MOUNT_DIAMETER, h=30 *THREAD_HEIGHT);
     translate([0, 0, THREAD_HEIGHT - 0.1])
-      cylinder(d=1.4*INCH, 6 * THREAD_HEIGHT); //clearance for focus ring
+      cylinder(d=1.2*INCH, 6 * THREAD_HEIGHT); //clearance for focus ring
   }
-  //draw_c_mount(thread_height);
+  *draw_m42_mount(thread_height);
 }
 
 
 module draw_holder(offset) {
   //this is where we draw the outer holders that will determine the hull
   translate(offset)
-    cylinder(d=C_MOUNT_DIAMETER, h=THREAD_HEIGHT);
+    cylinder(d=MOUNT_DIAMETER, h=THREAD_HEIGHT);
 }
 
 module cameras(with_fov=false) {
