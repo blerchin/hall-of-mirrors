@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@jscad/web": "1.10.0",
+    "@jscad/web": "2.6.1",
     "copy-dir": "1.2.0",
     "dotenv": "8.1.0",
     "express": "4.17.1",
